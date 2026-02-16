@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "^/$", "dest": "/pages/index.html" },
+    { "src": "^/about$", "dest": "/pages/about.html" },
+    { "src": "^/project$", "dest": "/pages/project.html" }
+  ]
+}

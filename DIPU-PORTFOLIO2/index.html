@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Dipu Badatya</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#fb923c',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lobster&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            font-family: 'Lato', sans-serif;
+        }
+
+        /* Typography */
+        .lobster-regular {
+            font-family: "Lobster", sans-serif;
+            font-weight: 400;
+        }
+
+        .lato-regular {
+            font-family: "Lato", sans-serif;
+            font-weight: 400;
+        }
+
+        .lato-bold {
+            font-family: "Lato", sans-serif;
+            font-weight: 700;
+        }
+
+        .lato-black {
+            font-family: "Lato", sans-serif;
+            font-weight: 900;
+        }
+
+        .bebas-font {
+            font-family: "Bebas Neue", sans-serif;
+        }
+
+        .quote-font {
+            font-family: "Playfair Display", serif;
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+        }
+
+        #loader-icon {
+            font-size: 3rem;
+            color: #fb923c;
+            opacity: 0;
+            transform: scale(0.8);
+            /* Controlled by JS */
+        }
+
+        /* --- BENTO GRID LAYOUT --- */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .bento-grid {
+                grid-template-columns: repeat(3, 1fr);
+                grid-auto-rows: minmax(300px, auto);
+            }
+
+            .bento-col-2 {
+                grid-column: span 2;
+            }
+
+            .bento-row-2 {
+                grid-row: span 2;
+            }
+        }
+
+        .bento-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            background: #f9fafb;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: #fb923c;
+        }
+
+        .bento-card:hover .bento-img {
+            transform: scale(1.05);
+        }
+
+        .bento-img {
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Marquee & Slider */
+        .marquee-container {
+            position: relative;
+            overflow: hidden;
+            height: 60px;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 4rem;
+            width: max-content;
+        }
+
+        .horizontal-scroll-container {
+            display: flex;
+            gap: 2rem;
+            width: max-content;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.4s ease-in-out;
+            visibility: hidden;
+        }
+
+        .mobile-menu.open {
+            max-height: 400px;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* HIGHLIGHTER ANIMATION STYLE */
+        .highlight-word {
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+            /* Natural Pastel Gradient */
+            background-image: linear-gradient(120deg, rgba(251, 146, 60, 0.2) 0%, rgba(251, 146, 60, 0.5) 100%);
+            background-repeat: no-repeat;
+            background-size: 0% 35%;
+            /* Start width 0, 35% height (marker thickness) */
+            background-position: 0% 90%;
+            /* Sits low like a marker stroke */
+            border-radius: 2px;
+            /* Important: Ensures proper spacing */
+            margin-right: 0.2em;
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden bg-white text-gray-900">
+
+    <div id="preloader">
+        <i id="loader-icon" class="ri-gemini-fill"></i>
+        <div class="text-center px-6 max-w-lg">
+            <p class="quote-font text-2xl md:text-3xl text-gray-900 leading-snug italic opacity-0 translate-y-4"
+                id="quote-text">
+                “What we think, we become.”
+            </p>
+            <span class="text-sm font-bold text-orange-500 mt-4 block uppercase tracking-widest opacity-0 translate-y-4"
+                id="quote-author">
+               — Buddha
+            </span>
+        </div>
+    </div>
+
+    <nav
+        class="w-full h-[55px] flex items-center justify-between px-5 md:px-10 pb-2 pt-0 relative z-50 bg-white border-b border-gray-100">
+        <div class="navo-logo pl-2">
+            <a href="#" class="font-medium lato-regular text-[20px] leading-[20px] tracking-tighter">
+                <i class="ri-gemini-fill text-orange-400"></i> DIPU
+            </a>
+        </div>
+        <div class="nav-links hidden md:flex gap-7 pr-3 text-[16px] lato-bold leading-[22.4px]">
+            <a href="/Pages/projects.html" class="hover:text-orange-400 transition-colors">Work</a>
+            <a href="/Pages/about.html" class="hover:text-orange-400 transition-colors">About</a>
+            <a href="https://drive.google.com/file/d/1e01L7mCJrbyzVm2bleg3zsBfKw3UMdom/view?usp=sharing"
+                class="hover:text-orange-400 transition-colors">Resume</a>
+            <a href="/Pages/contact.html" class="hover:text-orange-400 transition-colors">Contact</a>
+        </div>
+        <div class="hamburger md:hidden pr-3 cursor-pointer" id="hamburger">
+            <i class="ri-menu-line text-2xl"></i>
+        </div>
+        <div class="mobile-menu md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 z-40"
+            id="mobileMenu">
+            <a href="/Pages/projects.html"
+                class="block py-4 px-5 lato-bold hover:bg-gray-50 text-gray-800 border-b border-gray-100">Work</a>
+            <a href="/Pages/about.html"
+                class="block py-4 px-5 lato-bold hover:bg-gray-50 text-gray-800 border-b border-gray-100">About</a>
+            <a href="https://drive.google.com/file/d/1e01L7mCJrbyzVm2bleg3zsBfKw3UMdom/view?usp=sharing"
+                class="block py-4 px-5 lato-bold hover:bg-gray-50 text-gray-800 border-b border-gray-100">Resume</a>
+            <a href="/Pages/contact.html" class="block py-4 px-5 lato-bold hover:bg-gray-50 text-orange-400">Contact</a>
+        </div>
+    </nav>
+
+    <header class="relative w-full pt-28 md:pt-32 pb-20 px-4 flex flex-col items-center justify-center">
+        <div class="text-center z-20">
+            <div class="flex items-center justify-center gap-3 mb-6 anim-hero opacity-0 translate-y-10">
+                <span class="h-[1px] w-8 bg-orange-500"></span>
+                <h2 class="text-xs md:text-sm font-bold tracking-[0.3em] uppercase text-gray-500">Creative FullStack
+                    Developer</h2>
+                <span class="h-[1px] w-8 bg-orange-500"></span>
+            </div>
+            <h1
+                class="text-[13vw] leading-[0.85] lobster-regular text-gray-900 mb-8 md:mb-12 anim-hero opacity-0 translate-y-20 relative z-30">
+                Dipu Badatya
+            </h1>
+        </div>
+
+        <div
+            class="w-full max-w-[1400px] h-[50vh] md:h-[75vh] rounded-[2rem] md:rounded-[3rem] overflow-hidden relative shadow-2xl anim-hero opacity-0 translate-y-20 z-10">
+            <img src="images/photo_2026-02-16_10-23-54 (5).jpg" class="w-full h-full object-cover parallax-hero-img scale-110">
+            <div class="absolute inset-0 bg-black/10"></div>
+        </div>
+    </header>
+
+    <div class="py-4 border-y border-gray-100 bg-gray-50">
+        <div class="marquee-container">
+            <div class="marquee-track" id="marquee-track-main">
+                <span class="text-4xl bebas-font text-gray-300 px-8">HTML5 • CSS3 • JAVASCRIPT • REACT • TAILWIND • GSAP
+                    • SOCKET.IO • EXPRESS.JS • NODE.JS • MongoDb</span>
+                <span class="text-4xl bebas-font text-gray-800 px-8">HTML5 • CSS3 • JAVASCRIPT • REACT • TAILWIND • GSAP
+                    • SOCKET.IO • EXPRESS.JS • NODE.JS • MongoDb</span>
+                <span class="text-4xl bebas-font text-gray-300 px-8">HTML5 • CSS3 • JAVASCRIPT • REACT • TAILWIND • GSAP
+                    • SOCKET.IO • EXPRESS.JS • NODE.JS • MongoDb</span>
+                <span class="text-4xl bebas-font text-gray-800 px-8">HTML5 • CSS3 • JAVASCRIPT • REACT • TAILWIND • GSAP
+                    • SOCKET.IO • EXPRESS.JS • NODE.JS • MongoDb</span>
+            </div>
+        </div>
+    </div>
+
+    <section class="w-full bg-white py-32 md:py-48 px-6 flex justify-center items-center text-center">
+        <div class="max-w-5xl mx-auto w-full">
+            <h2 id="text-reveal"
+                class="text-[clamp(1.8rem,4vw,3.5rem)] leading-[1.6] tracking-normal lato-black text-gray-900">
+                Hey! I'm a developer based in India with a strong interest in backend development. I build REST APIs,
+                design MongoDB schemas, and work on secure server-side logic.
+            </h2>
+        </div>
+    </section>
+
+    <section class="w-full bg-white py-17 px-4 md:px-10 border-t border-gray-100">
+        <div class="max-w-[1400px] mx-auto">
+
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 anim-reveal">
+
+                <div class="max-w-2xl">
+                    <span class="text-orange-500 font-bold uppercase tracking-widest text-xs mb-3 block">System
+                        Showcase</span>
+                    <h2 class="text-4xl md:text-6xl lato-black text-gray-900 leading-tight">
+                        Powering Systems with <span class="lobster-regular text-orange-500 font-normal">Logic</span>.
+                    </h2>
+                </div>
+
+                <p class="text-gray-500 text-sm md:text-base lato-regular leading-relaxed max-w-md md:text-right">
+                    I enjoy building backend systems that manage data, handle APIs, and keep applications running
+                    smoothly and securely.
+                </p>
+
+            </div>
+
+            <div
+                class="relative w-full h-[350px] md:h-[80vh] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-sm border border-gray-200 group bg-gray-50 anim-reveal">
+
+                <video id="ui-video"
+                    class="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
+                    muted playsinline loop poster="">
+                    <source src="/images/SOME GLIMPS OF MY PROJECT.mp4" type="video/mp4">
+                </video>
+
+                <div class="absolute bottom-6 right-6 z-20">
+                    <div
+                        class="bg-black/30 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full flex items-center gap-3 shadow-lg">
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+                        </span>
+                        <span class="text-white font-mono text-xs tracking-widest font-bold"
+                            id="video-real-time">00:00:00</span>
+                    </div>
+                </div>
+
+                <div class="absolute inset-0 bg-black/5 pointer-events-none"></div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section id="projects" class="px-4 md:px-10 mb-24 max-w-[1400px] mx-auto pt-10">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+            <div>
+                <span class="text-orange-500 font-bold uppercase tracking-widest text-xs">My Workspace</span>
+                <h2 class="text-5xl lato-black mt-2">Featured Projects</h2>
+            </div>
+            <p class="lato-regular text-gray-500 max-w-sm text-sm md:text-right">
+                A selection of my best work in web development, mobile apps, and hardware integration.
+            </p>
+        </div>
+
+        <div class="bento-grid">
+
+            <a href="https://diary-web-app-nine.vercel.app/stories" target="_blank"
+                class="bento-card group anim-reveal">
+                <img src="/images/diary.gif" alt="Diary" class="bento-img">
+                <div class="absolute top-4 right-4 bg-white rounded-full p-2 shadow-md z-10">
+                    <i class="ri-arrow-right-up-line"></i>
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 w-full p-6 bg-white/95 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 class="lato-bold text-lg">Diary & Stories</h3>
+                    <p class="text-xs text-gray-500 mt-1">Full Stack • Node.js . Frontend</p>
+                </div>
+            </a>
+
+            <a href="https://advance-bus-tracking-deployment.onrender.com/" target="_blank"
+                class="bento-card group anim-reveal">
+                <img src="/images/bus-tracking.gif" alt="Resume" class="bento-img">
+                <div class="absolute top-4 right-4 bg-white rounded-full p-2 shadow-md z-10">
+                    <i class="ri-arrow-right-up-line"></i>
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 w-full p-6 bg-white/95 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 class="lato-bold text-lg">Real-Time-College-Bus-Tracking</h3>
+                    <p class="text-xs text-gray-500 mt-1">Node.js • Socket.Io • MongoDB</p>
+                </div>
+            </a>
+
+            <!-- <a href="https://resume-craft-three.vercel.app/" target="_blank" class="bento-card group anim-reveal">
+                <img src="/images/resume.gif" alt="Resume" class="bento-img">
+                <div class="absolute top-4 right-4 bg-white rounded-full p-2 shadow-md z-10">
+                    <i class="ri-arrow-right-up-line"></i>
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 w-full p-6 bg-white/95 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 class="lato-bold text-lg">ResumeCraft</h3>
+                    <p class="text-xs text-gray-500 mt-1">Utility • EJS, TailwindCSS</p>
+                </div>
+            </a> -->
+
+            <a href="https://medixz-ai.vercel.app/" target="_blank" class="bento-card group anim-reveal">
+                <img src="/images/cureit.gif" alt="CureIt" class="bento-img">
+                <div class="absolute top-4 right-4 bg-white rounded-full p-2 shadow-md z-10">
+                    <i class="ri-arrow-right-up-line"></i>
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 w-full p-6 bg-white/95 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 class="lato-bold text-lg">CureIt AI Guide</h3>
+                    <p class="text-xs text-gray-500 mt-1">AI Integration • Gemini</p>
+                </div>
+            </a>
+
+            <a href="#" class="bento-card bento-col-2 bento-row-2 group anim-reveal">
+                <img src="/images/jobready.jpg" alt="MKCG" class="bento-img">
+                <div
+                    class="absolute inset-0 bg-black/40 p-8 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span
+                        class="text-orange-500 font-bold text-xs uppercase bg-white px-3 py-1 rounded-full w-fit mb-3">IN
+                        PROGRESS
+                    </span>
+                    <h3 class="text-white text-3xl lato-bold">JOBREADY AI</h3>
+                    <p class="text-gray-200 text-sm mt-2 max-w-md">College Final Year Project In Progress</p>
+                </div>
+            </a>
+
+            <a href="https://imagify-landing-page.netlify.app/" target="_blank"
+                class="bento-card bento-row-2 group anim-reveal">
+                <img src="/images/imagify-banner.gif" alt="Shiro" class="bento-img">
+                <div
+                    class="absolute inset-0 bg-black/40 p-8 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span
+                        class="text-orange-500 font-bold text-xs uppercase bg-white px-3 py-1 rounded-full w-fit mb-3">Hardware</span>
+                    <h3 class="text-white text-2xl lato-bold">Imagify App</h3>
+                    <p class="text-gray-200 text-sm mt-2">React Native • Mobile.</p>
+                </div>
+            </a>
+
+         
+
+        </div>
+    </section>
+
+    <section class="w-full bg-white py-20 px-4 md:px-10 border-t border-gray-100">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-16 gap-6">
+                <div class="anim-reveal">
+                    <span class="text-orange-500 font-bold uppercase tracking-widest text-xs mb-3 block">Services</span>
+                    <h2 class="text-4xl md:text-6xl lg:text-7xl lato-black text-gray-900 leading-tight">
+                        Building Reliable<br>Backend Foundations.
+                    </h2>
+                </div>
+                <p class="text-gray-500 text-base md:text-lg max-w-md lg:text-right lato-regular anim-reveal">
+                    As a backend developer, I focus on building clean APIs, structured databases, and secure
+                    authentication systems.
+                </p>
+            </div>
+
+            <div class="flex flex-col border-t border-gray-200">
+
+                <!-- Service 01 -->
+                <div
+                    class="service-item group py-10 md:py-14 border-b border-gray-200 flex flex-col lg:flex-row justify-between lg:items-center cursor-pointer transition-all duration-500 hover:lg:px-6 hover:border-orange-500 anim-reveal">
+                    <div class="flex items-start md:items-center gap-4 md:gap-10 mb-6 lg:mb-0">
+                        <span
+                            class="text-gray-300 text-lg md:text-xl font-bold font-mono group-hover:text-orange-500 transition-colors mt-1 md:mt-0">01</span>
+                        <h3
+                            class="text-2xl md:text-4xl lg:text-5xl lato-bold text-gray-900 group-hover:text-orange-500 transition-colors">
+                            Backend Setup
+                        </h3>
+                    </div>
+                    <div
+                        class="flex flex-col md:flex-row md:items-center justify-between lg:justify-end gap-6 md:gap-10 w-full lg:w-auto">
+                        <p
+                            class="text-gray-500 text-sm md:text-base max-w-sm leading-relaxed lg:opacity-0 lg:group-hover:opacity-100 lg:-translate-x-4 lg:group-hover:translate-x-0 transition-all duration-500">
+                            Setting up Node.js, Express server structure, environment configuration, and clean project
+                            folders.
+                        </p>
+                        <div
+                            class="self-end md:self-auto w-10 h-10 md:w-12 md:h-12 rounded-full border border-gray-200 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300 flex-shrink-0">
+                            <i
+                                class="ri-server-line text-lg md:text-xl text-gray-400 group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 02 -->
+                <div
+                    class="service-item group py-10 md:py-14 border-b border-gray-200 flex flex-col lg:flex-row justify-between lg:items-center cursor-pointer transition-all duration-500 hover:lg:px-6 hover:border-orange-500 anim-reveal">
+                    <div class="flex items-start md:items-center gap-4 md:gap-10 mb-6 lg:mb-0">
+                        <span
+                            class="text-gray-300 text-lg md:text-xl font-bold font-mono group-hover:text-orange-500 transition-colors mt-1 md:mt-0">02</span>
+                        <h3
+                            class="text-2xl md:text-4xl lg:text-5xl lato-bold text-gray-900 group-hover:text-orange-500 transition-colors">
+                            API Development
+                        </h3>
+                    </div>
+                    <div
+                        class="flex flex-col md:flex-row md:items-center justify-between lg:justify-end gap-6 md:gap-10 w-full lg:w-auto">
+                        <p
+                            class="text-gray-500 text-sm md:text-base max-w-sm leading-relaxed lg:opacity-0 lg:group-hover:opacity-100 lg:-translate-x-4 lg:group-hover:translate-x-0 transition-all duration-500">
+                            Creating REST APIs with proper routing, controllers, validation, and structured error
+                            handling.
+                        </p>
+                        <div
+                            class="self-end md:self-auto w-10 h-10 md:w-12 md:h-12 rounded-full border border-gray-200 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300 flex-shrink-0">
+                            <i
+                                class="ri-code-s-slash-line text-lg md:text-xl text-gray-400 group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 03 -->
+                <div
+                    class="service-item group py-10 md:py-14 border-b border-gray-200 flex flex-col lg:flex-row justify-between lg:items-center cursor-pointer transition-all duration-500 hover:lg:px-6 hover:border-orange-500 anim-reveal">
+                    <div class="flex items-start md:items-center gap-4 md:gap-10 mb-6 lg:mb-0">
+                        <span
+                            class="text-gray-300 text-lg md:text-xl font-bold font-mono group-hover:text-orange-500 transition-colors mt-1 md:mt-0">03</span>
+                        <h3
+                            class="text-2xl md:text-4xl lg:text-5xl lato-bold text-gray-900 group-hover:text-orange-500 transition-colors">
+                            Database & Authentication
+                        </h3>
+                    </div>
+                    <div
+                        class="flex flex-col md:flex-row md:items-center justify-between lg:justify-end gap-6 md:gap-10 w-full lg:w-auto">
+                        <p
+                            class="text-gray-500 text-sm md:text-base max-w-sm leading-relaxed lg:opacity-0 lg:group-hover:opacity-100 lg:-translate-x-4 lg:group-hover:translate-x-0 transition-all duration-500">
+                            Designing MongoDB schemas, connecting database with Mongoose, and implementing login/signup
+                            using secure authentication.
+                        </p>
+                        <div
+                            class="self-end md:self-auto w-10 h-10 md:w-12 md:h-12 rounded-full border border-gray-200 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300 flex-shrink-0">
+                            <i
+                                class="ri-shield-check-line text-lg md:text-xl text-gray-400 group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- <section class="w-full bg-gray-50 py-24 px-6 md:px-12">
+    <div class="max-w-6xl mx-auto text-center mb-16 anim-reveal">
+        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-3 lato-black">My Backend Process</h2>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto lato-regular">
+            Building secure, scalable and reliable server-side systems that power real-world applications.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1400px] mx-auto">
+
+        <div class="relative rounded-2xl overflow-hidden group shadow-md hover:shadow-xl transition-all duration-300 anim-reveal aspect-square">
+            <img src="/images/backend-process1.png" alt="Architecture" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                <h3 class="text-xl font-bold">1. Architecture</h3>
+                <p class="text-xs mt-1">System Design & Planning</p>
+            </div>
+        </div>
+
+        <div class="relative rounded-2xl overflow-hidden group shadow-md hover:shadow-xl transition-all duration-300 anim-reveal aspect-square">
+            <img src="https://i.pinimg.com/1200x/5f/c5/c1/5fc5c15b3aa9b3c704adb4acdecf9fbc.jpg" alt="Database Design" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                <h3 class="text-xl font-bold">2. Database Design</h3>
+                <p class="text-xs mt-1">Schema & Relationships</p>
+            </div>
+        </div>
+
+        <div class="relative rounded-2xl overflow-hidden group shadow-md hover:shadow-xl transition-all duration-300 anim-reveal aspect-square">
+            <img src="https://i.pinimg.com/1200x/d9/f4/64/d9f464c125853ade7a3e02133bcd6759.jpg" alt="API Development" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                <h3 class="text-xl font-bold">3. API Development</h3>
+                <p class="text-xs mt-1">RESTful Services & Logic</p>
+            </div>
+        </div>
+
+        <div class="relative rounded-2xl overflow-hidden group shadow-md hover:shadow-xl transition-all duration-300 anim-reveal aspect-square">
+            <img src="/images/backend-process4.png" alt="Security & Deployment" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                <h3 class="text-xl font-bold">4. Security & Deployment</h3>
+                <p class="text-xs mt-1">Auth, Testing & Production</p>
+            </div>
+        </div>
+
+    </div>
+</section> -->
+
+
+    <!-- <div class="w-full bg-white flex flex-col items-center justify-center px-4 py-24 md:py-32">
+        <div class="max-w-6xl w-full flex flex-col md:flex-row items-center gap-12">
+            <div class="relative w-full md:w-2/3 group anim-reveal">
+                <div class="rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
+                    <video class="w-full h-auto transform transition-transform duration-700 group-hover:scale-105"
+                        src="/images/sanvee-jewellry.mp4" autoplay loop muted playsinline></video>
+                </div>
+                <div
+                    class="absolute bottom-4 right-4 bg-white/90 backdrop-blur text-black text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                    Live Preview</div>
+            </div>
+            <div class="w-full md:w-1/3 space-y-6 anim-reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 lato-black">UI Showcase</h2>
+                <p class="text-gray-600 text-lg leading-relaxed lato-regular">A creative frontend made with <span
+                        class="font-bold text-black">React</span> and <span
+                        class="font-bold text-black">TailwindCSS</span>. Focusing on smooth transitions and elegant
+                    layout.</p>
+                <a href="/Pages/projects.html"
+                    class="inline-block px-8 py-3 bg-black text-white rounded-full font-bold hover:bg-orange-500 transition-colors duration-300">See
+                    All Projects</a>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="py-20 overflow-hidden bg-white border-t border-gray-100">
+        <!-- <div class="container mx-auto px-4 mb-10">
+            <h2 class="text-4xl font-bold lato-bold" id="project-scroll-track">More Projects</h2>
+        </div> -->
+        <div class="relative w-full overflow-hidden">
+            <div class="horizontal-scroll-container pl-4">
+                <!-- <a href="https://trackyo.netlify.app/" class="block flex-shrink-0 w-[300px] md:w-[400px] group">
+                    <div class="h-[220px] md:h-[280px] rounded-xl overflow-hidden mb-4 relative">
+                        <img src="/images/banner.png"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <h3 class="text-xl font-bold lato-bold">Trackyo Job Tracker</h3>
+                </a> -->
+                <!-- <a href="https://playlist-for-you.netlify.app/"
+                    class="block flex-shrink-0 w-[300px] md:w-[400px] group">
+                    <div class="h-[220px] md:h-[280px] rounded-xl overflow-hidden mb-4 relative">
+                        <img src="/images/dashbordui.png"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <h3 class="text-xl font-bold lato-bold">Music Dashboard UI</h3>
+                </a> -->
+                <!-- <a href="https://sanveeflowers.netlify.app/" class="block flex-shrink-0 w-[300px] md:w-[400px] group">
+                    <div class="h-[220px] md:h-[280px] rounded-xl overflow-hidden mb-4 relative">
+                        <img src="/images/sanveeFlower.png"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <h3 class="text-xl font-bold lato-bold">Aesthetic Flower UI</h3>
+                </a> -->
+                <!-- <a href="https://cyclesync7.netlify.app/" class="block flex-shrink-0 w-[300px] md:w-[400px] group">
+                    <div class="h-[220px] md:h-[280px] rounded-xl overflow-hidden mb-4 relative">
+                        <img src="/images/CycleSync.png"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <h3 class="text-xl font-bold lato-bold">Medical WebApp</h3>
+                </a> -->
+                <!-- <a href="https://cozy-sprinkles-67caf9.netlify.app/"
+                    class="block flex-shrink-0 w-[300px] md:w-[400px] group">
+                    <div class="h-[220px] md:h-[280px] rounded-xl overflow-hidden mb-4 relative">
+                        <img src="/images/pstarz.png"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <h3 class="text-xl font-bold lato-bold">T-Shirt Brand Landing</h3>
+                </a> -->
+                <!-- <a href="https://sanimx-gsap-animations.netlify.app/"
+                    class="block flex-shrink-0 w-[300px] md:w-[400px] group">
+                    <div class="h-[220px] md:h-[280px] rounded-xl overflow-hidden mb-4 relative">
+                        <img src="/images/sanimx-gsap.png"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <h3 class="text-xl font-bold lato-bold">GSAP Animation Library</h3>
+                </a> -->
+                <!-- <!-- <a href="https://my-portfolio-pb7.netlify.app/"
+                    class="block flex-shrink-0 w-[300px] md:w-[400px] group">
+                    <div class="h-[220px] md:h-[280px] rounded-xl overflow-hidden mb-4 relative">
+                        <img src="/images/react.png"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <h3 class="text-xl font-bold lato-bold">React Portfolio V1</h3>
+                </a> -->
+                <!-- <a href="https://the-batman12.netlify.app/" class="block flex-shrink-0 w-[300px] md:w-[400px] group">
+                    <div class="h-[220px] md:h-[280px] rounded-xl overflow-hidden mb-4 relative">
+                        <img src="/images/bataman2.png"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <h3 class="text-xl font-bold lato-bold">Batman Fan Page</h3>
+                </a> -->
+            </div>
+        </div>
+    </div> 
+
+    <section id="desk-section" class="w-full bg-white py-24 px-4 md:px-10 border-t border-gray-100">
+        <div class="max-w-[1400px] mx-auto">
+
+            <div
+                class="desk-anim-text flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4 md:gap-6 opacity-0 translate-y-10">
+                <div class="max-w-lg">
+                    <span class="text-orange-500 font-bold uppercase tracking-widest text-xs mb-2 block">The Base</span>
+                    <h2 class="text-4xl sm:text-5xl md:text-6xl lato-black text-gray-900 leading-[1.1]">
+                        My Daily <span class="lobster-regular text-orange-500 font-normal">View</span>.
+                    </h2>
+                </div>
+
+                <div
+                    class="flex items-center gap-2 text-gray-400 text-xs uppercase tracking-widest font-bold md:animate-pulse">
+                    <i class="ri-mouse-line hidden md:inline-block"></i>
+                    <span class="hidden md:inline-block">Hover for Specs</span>
+                    <span class="md:hidden">Tap to Explore</span>
+                </div>
+            </div>
+
+            <div
+                class="desk-anim-card relative w-full h-[400px] md:h-[75vh] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl border border-gray-200 group bg-gray-900 opacity-0 translate-y-20">
+
+                <img src="/images/mydesk.jpg" alt="My Desk Setup"
+                    class="desk-parallax-img w-full h-full object-cover opacity-90 transition-all duration-700 ease-out group-hover:opacity-60 scale-110">
+
+                <div
+                    class="absolute inset-0 flex items-center justify-center transition-opacity duration-500 group-hover:opacity-0 pointer-events-none">
+                    <div class="text-center">
+                        <div
+                            class="w-14 h-14 md:w-16 md:h-16 rounded-full border-2 border-white/50 flex items-center justify-center mb-4 mx-auto backdrop-blur-sm">
+                            <i class="ri-add-line text-2xl md:text-3xl text-white"></i>
+                        </div>
+                        <p class="text-white font-bold tracking-[0.2em] text-xs md:text-sm uppercase">Creative Zone</p>
+                    </div>
+                </div>
+
+                <div
+                    class="absolute bottom-0 left-0 w-full bg-white/10 backdrop-blur-xl border-t border-white/20 p-6 md:p-10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-white">
+
+                        <div
+                            class="space-y-1 md:space-y-2 border-b md:border-b-0 md:border-r border-white/20 pb-4 md:pb-0">
+                            <span
+                                class="text-orange-400 text-[10px] font-bold uppercase tracking-widest">Coordinates</span>
+                            <div class="flex items-center gap-3">
+                                <i class="ri-map-pin-2-fill text-xl md:text-2xl"></i>
+                                <div>
+                                    <h4 class="text-lg md:text-xl lato-bold">INDIA</h4>
+                                    <p class="text-[10px] md:text-xs text-gray-300">Berhampur, Odisha </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 border-b md:border-b-0 md:border-r border-white/20 pb-4 md:pb-0 md:pl-8">
+                            <span
+                                class="text-orange-400 text-[10px] font-bold uppercase tracking-widest">Environment</span>
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="px-2 py-1 md:px-3 border border-white/30 rounded-full text-[10px] md:text-xs">Minimalist</span>
+                                <span
+                                    class="px-2 py-1 md:px-3 border border-white/30 rounded-full text-[10px] md:text-xs">High
+                                    Perf.</span>
+                                <span
+                                    class="px-2 py-1 md:px-3 border border-white/30 rounded-full text-[10px] md:text-xs">Lo-Fi
+                                    Audio</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 md:pl-8 flex flex-col justify-center">
+                            <span class="text-orange-400 text-[10px] font-bold uppercase tracking-widest">Current
+                                State</span>
+                            <div class="flex items-center gap-2">
+                                <span class="relative flex h-2 w-2 md:h-3 md:w-3">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                    <span
+                                        class="relative inline-flex rounded-full h-2 w-2 md:h-3 md:w-3 bg-green-500"></span>
+                                </span>
+                                <span class="text-base md:text-lg lato-bold">Ready to Build.</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div
+                    class="absolute top-4 left-4 md:top-6 md:left-6 w-6 h-6 md:w-8 md:h-8 border-l-2 border-t-2 border-white/50 rounded-tl-lg">
+                </div>
+                <div
+                    class="absolute top-4 right-4 md:top-6 md:right-6 w-6 h-6 md:w-8 md:h-8 border-r-2 border-t-2 border-white/50 rounded-tr-lg">
+                </div>
+                <div
+                    class="absolute bottom-4 left-4 md:bottom-6 md:left-6 w-6 h-6 md:w-8 md:h-8 border-l-2 border-b-2 border-white/50 rounded-bl-lg transition-opacity duration-300 group-hover:opacity-0">
+                </div>
+                <div
+                    class="absolute bottom-4 right-4 md:bottom-6 md:right-6 w-6 h-6 md:w-8 md:h-8 border-r-2 border-b-2 border-white/50 rounded-br-lg transition-opacity duration-300 group-hover:opacity-0">
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="w-full bg-white py-20 px-6 border-y border-gray-50 my-10">
+        <div class="max-w-4xl mx-auto text-center anim-reveal">
+            <div class="mb-6">
+                <i class="ri-double-quotes-l text-4xl md:text-5xl text-orange-400 opacity-80 inline-block"></i>
+            </div>
+            <h2 class="quote-font text-3xl md:text-5xl md:leading-tight text-gray-900 mb-8">"It’s not about ideas. It’s
+                about making ideas happen."</h2>
+            <div class="flex items-center justify-center gap-4">
+                <span class="h-[1px] w-8 bg-orange-400"></span>
+                <p class="lato-bold text-xs md:text-sm text-gray-500 uppercase tracking-[3px]">Scott Belsky</p>
+                <span class="h-[1px] w-8 bg-orange-400"></span>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black text-white py-16 lato-regular border-t border-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+                <div class="space-y-4">
+                    <a href="#" class="text-2xl font-bold lato-black tracking-tighter flex items-center gap-2"><i
+                            class="ri-gemini-fill text-orange-400"></i> DIPU</a>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs">I build the logic behind the interface,
+                        creating secure APIs and structured databases that power seamless digital experiences..</p>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-lg lato-bold text-white mb-2">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/Pages/projects.html"
+                                class="text-gray-400 hover:text-orange-400 transition-colors text-sm">Work</a></li>
+                        <li><a href="/Pages/about.html"
+                                class="text-gray-400 hover:text-orange-400 transition-colors text-sm">About Me</a></li>
+                        <li><a href="https://drive.google.com/file/d/1e01L7mCJrbyzVm2bleg3zsBfKw3UMdom/view?usp=sharing"
+                                target="_blank"
+                                class="text-gray-400 hover:text-orange-400 transition-colors text-sm">Resume</a></li>
+                        <li><a href="/Pages/contact.html"
+                                class="text-gray-400 hover:text-orange-400 transition-colors text-sm">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-lg lato-bold text-white mb-2">Contact Info</h3>
+                    <div class="space-y-3">
+                        <a href="mailto:papubadatya355@gmail.com"
+                            class="flex items-center gap-3 text-gray-400 hover:text-orange-400 transition-colors text-sm group"><i
+                                class="ri-mail-line text-lg group-hover:text-white transition-colors"></i>
+                            dipubadatya113@gmail.com</a>
+                        <a href="tel:+916370134774"
+                            class="flex items-center gap-3 text-gray-400 hover:text-orange-400 transition-colors text-sm group"><i
+                                class="ri-phone-line text-lg group-hover:text-white transition-colors"></i> +91
+                            7205577687</a>
+                        <div class="flex items-start gap-3 text-gray-400 text-sm"><i
+                                class="ri-map-pin-line text-lg mt-0.5"></i> <span>Berhampur, Ganjam,<br>Odisha, India -
+                                760010</span></div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-lg lato-bold text-white mb-2">Interested in connecting?</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="https://www.linkedin.com/in/dipu-badatya/" target="_blank"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-[#0077b5] hover:text-white transition-all duration-300"><i
+                                class="ri-linkedin-fill text-lg"></i></a>
+                        <a href="https://github.com/dipubadatya" target="_blank"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-white hover:text-black transition-all duration-300"><i
+                                class="ri-github-fill text-lg"></i></a>
+                        <!-- <a href="https://www.instagram.com/_pstarz/" target="_blank"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-[#E1306C] hover:text-white transition-all duration-300"><i
+                                class="ri-instagram-line text-lg"></i></a> -->
+                        <!-- <a href="https://x.com/_pstarz" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-black hover:text-white transition-all duration-300"><i class="ri-twitter-x-fill text-lg"></i></a>
+                        <a href="https://www.behance.net/papubadatya1" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-[#1769ff] hover:text-white transition-all duration-300"><i class="ri-behance-fill text-lg"></i></a> -->
+                    </div>
+                </div>
+            </div>
+            <div
+                class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+                <!-- <p>© 2025 Dipu Badatya. All rights reserved.</p> -->
+                <p class="flex items-center gap-1">Made with <i class="ri-heart-fill text-red-500 animate-pulse"></i> &
+                    <i class="ri-music-2-fill text-orange-400"></i>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 1. Lenis Smooth Scroll
+        const lenis = new Lenis({ autoRaf: true, smooth: true });
+
+        // 2. Optimized Preloader - Fixed Timing
+        // Initially hide opacity
+        gsap.set('#loader-icon', { opacity: 0, scale: 0.8 });
+
+        // Immediate animation (DOMContentLoaded)
+        document.addEventListener("DOMContentLoaded", () => {
+            const preloaderTl = gsap.timeline();
+            preloaderTl.to(['#quote-text', '#quote-author'], { opacity: 1, y: 0, duration: 1, ease: 'power2.out', stagger: 0.3 })
+                .to('#loader-icon', { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.7)' }, "-=0.5");
+        });
+
+        // When everything loads, fade out
+        window.addEventListener('load', () => {
+            gsap.to('#preloader', {
+                y: '-100%',
+                duration: 1.5,
+                ease: 'power4.inOut',
+                delay: 0.5,
+                onComplete: () => {
+                    document.getElementById('preloader').style.display = 'none';
+                    gsap.to(".anim-hero", { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out" });
+                }
+            });
+        });
+
+        // Fallback safety
+        setTimeout(() => {
+            if (document.getElementById('preloader').style.display !== 'none') {
+                gsap.to('#preloader', {
+                    y: '-100%',
+                    duration: 1,
+                    ease: 'power4.inOut',
+                    onComplete: () => {
+                        document.getElementById('preloader').style.display = 'none';
+                        gsap.to(".anim-hero", { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out" });
+                    }
+                });
+            }
+        }, 5000);
+
+        // 3. GSAP Config
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 4. Marquee
+        gsap.to("#marquee-track-main", { xPercent: -50, repeat: -1, duration: 30, ease: "none" });
+
+        // 5. Parallax for Hero Image
+        gsap.to(".parallax-hero-img", {
+            yPercent: 20,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "header",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // 6. Horizontal Scroll
+        const scrollContainer = document.querySelector(".horizontal-scroll-container");
+        function getScrollAmount() { return -(scrollContainer.scrollWidth - window.innerWidth); }
+        gsap.to(scrollContainer, {
+            x: () => getScrollAmount(),
+            duration: 3, ease: "none",
+            scrollTrigger: {
+                trigger: ".horizontal-scroll-container",
+                start: "top 80%", end: () => `+=${getScrollAmount() * -1}`, scrub: 1, invalidateOnRefresh: true,
+            }
+        });
+
+        // 7. Reveal Animations (Generic)
+        document.querySelectorAll('.anim-reveal').forEach(el => {
+            gsap.from(el, {
+                y: 50, opacity: 0, duration: 1, ease: "power2.out",
+                scrollTrigger: { trigger: el, start: "top 85%" }
+            });
+        });
+
+        // 8. Text Reveal Animation (Highlighter Effect)
+        const textElement = document.getElementById('text-reveal');
+        if (textElement) {
+            const text = textElement.innerText;
+            const words = text.split(" ");
+            textElement.innerHTML = "";
+
+            words.forEach(word => {
+                const span = document.createElement("span");
+                span.innerText = word;
+                span.className = "highlight-word";
+                textElement.appendChild(span);
+                textElement.appendChild(document.createTextNode(" "));
+            });
+
+            gsap.to(".highlight-word", {
+                backgroundSize: "100% 35%",
+                stagger: 0.1,
+                scrollTrigger: {
+                    trigger: "#text-reveal",
+                    start: "top 80%",
+                    end: "bottom 50%",
+                    scrub: 1
+                }
+            });
+        }
+
+        // 9. Mobile Menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        hamburger.addEventListener('click', () => { mobileMenu.classList.toggle('open'); });
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#hamburger') && !e.target.closest('#mobileMenu')) {
+                mobileMenu.classList.remove('open');
+            }
+        });
+
+        // 10. Desk Section Animations (Unified Timeline Fix)
+        const deskTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#desk-section",
+                start: "top 75%"
+            }
+        });
+
+        deskTl.to(".desk-anim-text", {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power3.out"
+        })
+            .to(".desk-anim-card", {
+                y: 0,
+                opacity: 1,
+                duration: 1.2,
+                ease: "power3.out"
+            }, "-=0.6");
+
+        gsap.to(".desk-parallax-img", {
+            yPercent: 20,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".desk-anim-card",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // 11. Video Logic (Counter + Scroll Play/Pause)
+        const videoElement = document.getElementById('ui-video');
+        const timeDisplay = document.getElementById('video-real-time');
+
+        // A. Real-time Counter
+        if (videoElement && timeDisplay) {
+            videoElement.addEventListener('timeupdate', () => {
+                const currentTime = videoElement.currentTime;
+
+                const minutes = Math.floor(currentTime / 60);
+                const seconds = Math.floor(currentTime % 60);
+                const ms = Math.floor((currentTime % 1) * 100);
+
+                const fMin = String(minutes).padStart(2, '0');
+                const fSec = String(seconds).padStart(2, '0');
+                const fMs = String(ms).padStart(2, '0');
+
+                timeDisplay.innerText = `${fMin}:${fSec}:${fMs}`;
+            });
+        }
+
+        // B. Scroll-Based Play/Pause Logic
+        ScrollTrigger.create({
+            trigger: "#ui-video",
+            start: "top bottom", // enter viewport
+            end: "bottom top",   // leave viewport
+            onEnter: () => {
+                if (videoElement) videoElement.play();
+            },
+            onLeave: () => {
+                if (videoElement) videoElement.pause();
+            },
+            onEnterBack: () => {
+                if (videoElement) videoElement.play();
+            },
+            onLeaveBack: () => {
+                if (videoElement) videoElement.pause();
+            }
+        });
+
+        // C. Scale Animation
+        gsap.from("#ui-video", {
+            scale: 1.05,
+            duration: 1.5,
+            scrollTrigger: {
+                trigger: "#ui-video",
+                start: "top 90%",
+                end: "bottom 60%",
+                scrub: 1
+            }
+        });
+    </script>
+</body>
+
+</html>

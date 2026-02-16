@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Dipu Badatya</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+    
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; }
+        .lato-bold { font-family: "Lato", sans-serif; font-weight: 700; }
+        .lato-regular { font-family: "Lato", sans-serif; font-weight: 400; }
+        .lato-black { font-family: "Lato", sans-serif; font-weight: 900; }
+        .quote-font { font-family: "Playfair Display", serif; }
+        .mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .mobile-menu.open { max-height: 300px; }
+        
+        /* Subtle card hover */
+        .contact-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .contact-card:hover { transform: translateY(-5px); }
+    </style>
+</head>
+
+<body class="overflow-x-hidden bg-white text-black">
+    
+    <nav class="w-full h-[55px] flex items-center justify-between px-5 md:px-10 pb-2 pt-0 relative z-50 bg-white">
+        <div class="navo-logo pl-2">
+            <a href="/index.html" class="font-medium lato-regular text-[20px] leading-[20px] tracking-tighter">
+                <i class="ri-gemini-fill text-orange-400"></i> DIPU
+            </a>
+        </div>
+
+        <div class="nav-links hidden md:flex gap-7 pr-3 text-[16px] lato-bold leading-[22.4px]">
+            <a href="projects.html" class="hover:text-orange-400 transition-colors">Work</a>
+            <a href="about.html" class="hover:text-orange-400 transition-colors">About</a>
+            <a href="https://drive.google.com/file/d/1e01L7mCJrbyzVm2bleg3zsBfKw3UMdom/view?usp=sharing" class="hover:text-orange-400 transition-colors">Resume</a>
+            <a href="contact.html" class="text-orange-400">Contact</a>
+        </div>
+
+        <div class="hamburger md:hidden pr-3 cursor-pointer" id="hamburger">
+            <i class="ri-menu-line text-2xl"></i>
+        </div>
+
+        <div class="mobile-menu md:hidden absolute top-full left-0 w-full bg-white shadow-lg border-t border-gray-100 z-40" id="mobileMenu">
+            <a href="projects.html" class="block py-4 px-5 lato-bold border-b border-gray-100">Work</a>
+            <a href="about.html" class="block py-4 px-5 lato-bold border-b border-gray-100">About</a>
+            <a href="contact.html" class="block py-4 px-5 lato-bold text-orange-400">Contact</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-16 md:py-24">
+        <div class="max-w-6xl mx-auto">
+            <div class="mb-20 anim-item">
+                <h1 class="text-6xl md:text-8xl font-bold lato-black mb-6 tracking-tighter">Get In Touch.</h1>
+                <p class="text-xl md:text-2xl lato-regular text-gray-500 leading-relaxed max-w-2xl">
+                    I'm currently looking for new opportunities as a <span class="text-black font-semibold">Full Stack Developer</span>. Let's build something amazing together.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                
+                <div class="space-y-12">
+                    <div class="anim-item group">
+                        <h3 class="text-sm lato-bold text-orange-400 uppercase tracking-widest mb-4">Email me</h3>
+                        <div class="flex items-center gap-4">
+                            <a href="mailto:dipubadatya113@gmail.com" class="text-2xl md:text-3xl lato-bold hover:text-orange-400 transition-all border-b-2 border-transparent hover:border-orange-400">
+                                dipubadatya113@gmail.com
+                            </a>
+                            <button onclick="copyEmail()" class="p-2 bg-gray-100 rounded-full hover:bg-orange-100 transition-colors" title="Copy Email">
+                                <i class="ri-file-copy-line"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="anim-item">
+                        <h3 class="text-sm lato-bold text-orange-400 uppercase tracking-widest mb-4">Call / WhatsApp</h3>
+                        <a href="tel:+917205577687" class="text-2xl md:text-3xl lato-bold hover:text-orange-400 transition-all">+91 7205577687</a>
+                    </div>
+
+                    <div class="anim-item">
+                        <h3 class="text-sm lato-bold text-orange-400 uppercase tracking-widest mb-4">Location</h3>
+                        <p class="text-2xl lato-bold">Brahmapur, Odisha, India</p>
+                    </div>
+
+                    <div class="anim-item flex gap-8">
+                        <a href="https://www.linkedin.com/in/dipu-badatya/" class="text-4xl hover:text-orange-400 transition-transform hover:-translate-y-1"><i class="ri-linkedin-box-fill"></i></a>
+                        <a href="https://github.com/dipubadatya" class="text-4xl hover:text-orange-400 transition-transform hover:-translate-y-1"><i class="ri-github-fill"></i></a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 anim-item">
+                   
+
+                    <div class="bg-gray-50 p-8 rounded-3xl contact-card border border-gray-100">
+                        <div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center text-white mb-6">
+                            <i class="ri-code-s-slash-line text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl lato-bold mb-2">Tech Stack</h3>
+                        <p class="text-gray-600 lato-regular">MERN Stack, Tailwind CSS, GSAP</p>
+                    </div>
+
+                    <div class="bg-black text-white p-8 rounded-3xl contact-card shadow-xl">
+           
+                        <a href="https://www.linkedin.com/in/dipu-badatya/" class="inline-flex items-center gap-2 bg-orange-400 text-white px-6 py-3 rounded-full lato-bold hover:bg-orange-500 transition-colors">
+                            Message on LinkedIn <i class="ri-arrow-right-line"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <section class="w-full bg-white py-20 px-6 border-y border-gray-50 my-10">
+        <div class="max-w-4xl mx-auto text-center anim-reveal">
+            <h2 class="quote-font text-3xl md:text-5xl md:leading-tight text-gray-900 mb-8">
+                "You can’t use up creativity. The more you use, the more you have."
+            </h2>
+            <p class="lato-bold text-xs md:text-sm text-gray-500 uppercase tracking-[3px]">Maya Angelou</p>
+        </div>
+    </section>
+
+    <footer class="bg-black text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-500">© Dipu Badatya. Built with ❤️ and Code.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth Scroll
+        const lenis = new Lenis({ autoRaf: true });
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        gsap.utils.toArray(".anim-item").forEach((element, i) => {
+            gsap.from(element, {
+                scrollTrigger: { trigger: element, start: "top 90%" },
+                opacity: 0, 
+                y: 40, 
+                duration: 1, 
+                delay: i * 0.1, 
+                ease: "expo.out"
+            });
+        });
+
+        // Copy Email Function
+        function copyEmail() {
+            navigator.clipboard.writeText('dipubadatya113@gmail.com');
+            alert('Email copied to clipboard!');
+        }
+
+        // Hamburger Menu
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
