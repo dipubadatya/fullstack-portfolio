@@ -249,8 +249,9 @@
         <div class="nav-links hidden md:flex gap-7 pr-3 text-[16px] lato-bold leading-[22.4px]">
             <!-- <a href="/Pages/projects.html" class="hover:text-orange-400 transition-colors">Work</a> -->
             <a href="/Pages/about.html" class="hover:text-orange-400 transition-colors">About</a>
-            <a href="https://drive.google.com/file/d/1e01L7mCJrbyzVm2bleg3zsBfKw3UMdom/view?usp=sharing"
-                class="hover:text-orange-400 transition-colors">Resume</a>
+         <a class="resume-link hover:text-orange-400 transition-colors" target="_blank" rel="noopener noreferrer">
+                Resume
+            </a>
             <a href="/Pages/contact.html" class="hover:text-orange-400 transition-colors">Contact</a>
         </div>
         <div class="hamburger md:hidden pr-3 cursor-pointer" id="hamburger">
@@ -262,8 +263,9 @@
                 class="block py-4 px-5 lato-bold hover:bg-gray-50 text-gray-800 border-b border-gray-100">Work</a> -->
             <a href="/Pages/about.html"
                 class="block py-4 px-5 lato-bold hover:bg-gray-50 text-gray-800 border-b border-gray-100">About</a>
-            <a href="https://drive.google.com/file/d/1e01L7mCJrbyzVm2bleg3zsBfKw3UMdom/view?usp=sharing"
-                class="block py-4 px-5 lato-bold hover:bg-gray-50 text-gray-800 border-b border-gray-100">Resume</a>
+                  <a class="resume-link block py-4 px-5 lato-bold hover:bg-gray-50 text-gray-800 border-b border-gray-100" target="_blank" rel="noopener noreferrer">
+                Resume
+            </a>
             <a href="/Pages/contact.html" class="block py-4 px-5 lato-bold hover:bg-gray-50 text-orange-400">Contact</a>
         </div>
     </nav>
@@ -890,6 +892,7 @@
         </div>
     </footer>
 
+    <script src="/index.js"></script>
     <script>
         // 1. Lenis Smooth Scroll
         const lenis = new Lenis({ autoRaf: true, smooth: true });
