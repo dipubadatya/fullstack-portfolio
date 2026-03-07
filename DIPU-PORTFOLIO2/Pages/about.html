@@ -495,6 +495,18 @@
                 }
             });
         });
+
+          let dateElements = document.getElementsByClassName("date");
+
+        let today = new Date();
+        let formattedDate = today.toLocaleDateString("en-IN", {
+
+            year: "numeric"
+        });
+
+        for (let i = 0; i < dateElements.length; i++) {
+            dateElements[i].textContent = formattedDate;
+        }
     </script>
 </body>
 

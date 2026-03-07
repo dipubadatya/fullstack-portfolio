@@ -1,0 +1,926 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIARY | Project Case Study</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Lobster&family=Fira+Code&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { brand: '#fb923c', dark: '#0a0a0a' },
+                    fontFamily: { lato: ['Lato', 'sans-serif'], lobster: ['Lobster', 'cursive'], mono: ['Fira Code', 'monospace'] }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: #fff;
+            color: #1a1a1a;
+        }
+
+        .bento-card {
+            border-radius: 2rem;
+            background: #fcfcfc;
+            border: 1px solid #eee;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .bento-card:hover {
+            border-color: #fb923c;
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.08);
+        }
+
+        .lobster-font {
+            font-family: 'Lobster', cursive;
+        }
+
+        .badge {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 900;
+            color: #fb923c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* RESPONSIVE IMAGE FIX */
+        .responsive-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            transition: transform 0.8s ease;
+        }
+
+        /* On mobile, we use aspect-ratio to ensure the image isn't overly cropped or zoomed */
+        @media (max-width: 768px) {
+            .mobile-img-fix {
+                height: auto !important;
+                aspect-ratio: 4/3;
+            }
+
+            .responsive-img {
+                object-fit: contain;
+                background: #f9fafb;
+            }
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden">
+
+    <nav
+        class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md h-[55px] flex items-center justify-between px-6 md:px-12 border-b border-gray-100">
+        <a href="/" class="font-black text-xl tracking-tighter"><i class="ri-gemini-fill text-brand"></i> DIPU</a>
+        <div class="flex gap-8 text-[10px] font-black uppercase tracking-widest">
+            <a href="https://github.com/dipubadatya/DIARY-WEB-APP" target="_blank" class="text-brand">View
+                Repository</a>
+            <a href="/Pages/contact.html" class="hover:text-brand transition-colors">Hire Me</a>
+        </div>
+    </nav>
+
+    <header class="pt-32 pb-16 px-6 max-w-7xl mx-auto">
+        <div class="flex items-center gap-3 mb-4 anim-hero opacity-0 translate-y-10">
+            <span class="h-[1px] w-8 bg-brand"></span>
+            <h2 class="text-xs font-bold tracking-[0.3em] uppercase text-gray-400">Project Overview</h2>
+        </div>
+        <h1 class="text-6xl md:text-[8vw] leading-none lobster-font mb-6 anim-hero opacity-0 translate-y-10">Diary
+            Platform.</h1>
+        <p class="text-xl md:text-2xl text-gray-500 max-w-3xl leading-relaxed anim-hero opacity-0 translate-y-10">
+            A full-stack writing ecosystem designed to handle <span
+                class="text-gray-900 font-bold underline decoration-brand">real-time content delivery</span> and secure
+            user relationships.
+        </p>
+    </header>
+    <div class="flex flex-wrap gap-4 mt-10 anim-hero opacity-0 flex justify-center">
+        <a href="https://diary-web-app-nine.vercel.app" target="_blank"
+            class="px-8 py-4 bg-brand text-white rounded-full font-black text-xs uppercase tracking-widest shadow-lg shadow-brand/20 hover:brightness-110 transition-all flex items-center gap-2">
+            <i class="ri-external-link-line"></i> Launch Live System
+        </a>
+        <a href="https://github.com/dipubadatya/DIARY-WEB-APP" target="_blank"
+            class="px-8 py-4 bg-white text-dark border border-gray-200 rounded-full font-black text-xs uppercase tracking-widest hover:border-brand transition-all flex items-center gap-2">
+            <i class="ri-github-fill"></i> View Repository
+        </a>
+    </div>
+    <section class="py-12 px-6 max-w-7xl mx-auto anim-reveal">
+        <div class="bg-blue-50 border border-blue-100 rounded-[2rem] p-8 md:p-12">
+            <h3 class="text-xs font-black uppercase tracking-widest text-brand mb-4">What is DIARY</h3>
+            <p class="text-2xl md:text-3xl font-bold text-gray-900 leading-snug">
+                <span class="text-brand">DIARY</span> is a social space built for writers. It’s where people sign up to
+                share stories, follow their favorite voices, and turn lonely posts into live conversations through
+                real-time likes and comments.
+            </p>
+        </div>
+    </section>
+
+    <section class="px-4 md:px-10 max-w-7xl mx-auto mb-24">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+            <div class="md:col-span-8 h-[350px] md:h-[500px] bento-card relative group anim-reveal overflow-hidden">
+                <video class="w-full h-full object-cover object-center" aria-label="Glimpse of my project landing page"
+                    autoplay muted playsinline loop>
+                    <source src="/images/diary-demo-video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div class="md:col-span-4 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/diary-profile-mobile.png" class="w-full h-full object-cover object-center"
+                    alt="Socket Logic">
+
+            </div>
+
+            <div class="md:col-span-4 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/diary-mockup-mobile (1).png" class="w-full h-full object-cover object-center"
+                    alt="Social Feed">
+
+            </div>
+
+            <div class="md:col-span-8 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/diary-mockup-desktop.png"
+                    class="w-full h-full object-cover object-center" alt="Dashboard">
+
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="py-24 bg-gray-50 border-y border-gray-100 px-6">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20">
+
+            <div class="anim-reveal">
+                <h3
+                    class="text-xs font-black uppercase tracking-[0.3em] text-brand mb-10 underline decoration-2 underline-offset-[12px]">
+                    The Stack Architecture</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2 p-6 bg-white border border-gray-200 rounded-3xl shadow-sm">
+                        <i class="ri-nodejs-fill text-2xl text-green-600"></i>
+                        <span class="text-sm font-black">Node.js Runtime</span>
+                    </div>
+                    <div class="flex flex-col gap-2 p-6 bg-white border border-gray-200 rounded-3xl shadow-sm">
+                        <i class="ri-database-2-fill text-2xl text-emerald-500"></i>
+                        <span class="text-sm font-black">MongoDB Atlas</span>
+                    </div>
+                    <div class="flex flex-col gap-2 p-6 bg-white border border-gray-200 rounded-3xl shadow-sm">
+                        <i class="ri-code-box-fill text-2xl text-blue-500"></i>
+                        <span class="text-sm font-black">EJS Engine</span>
+                    </div>
+                    <div class="flex flex-col gap-2 p-6 bg-white border border-gray-200 rounded-3xl shadow-sm">
+                        <i class="ri-broadcast-fill text-2xl text-violet-500"></i>
+                        <span class="text-sm font-black">Socket.io API</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="anim-reveal">
+                <h3
+                    class="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mb-10 underline decoration-2 underline-offset-[12px]">
+                    Project Use Cases</h3>
+                <div class="space-y-8">
+                    <div class="flex gap-4">
+                        <div
+                            class="w-12 h-12 rounded-2xl bg-white border border-gray-100 flex-shrink-0 flex items-center justify-center shadow-sm">
+                            <i class="ri-user-follow-line text-brand"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-black mb-1">Secure Networking</h4>
+                            <p class="text-sm text-gray-500 leading-relaxed italic">Followers, likes, and comments with
+                                strict backend authorization.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div
+                            class="w-12 h-12 rounded-2xl bg-white border border-gray-100 flex-shrink-0 flex items-center justify-center shadow-sm">
+                            <i class="ri-notification-badge-line text-brand"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-black mb-1">Live Notifications</h4>
+                            <p class="text-sm text-gray-500 leading-relaxed italic">Managing state across multiple
+                                client instances using WebSockets.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div
+                            class="w-12 h-12 rounded-2xl bg-white border border-gray-100 flex-shrink-0 flex items-center justify-center shadow-sm">
+                            <i class="ri-cloud-line text-brand"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-black mb-1">Media Management</h4>
+                            <p class="text-sm text-gray-500 leading-relaxed italic">Asset hosting for profile pictures
+                                and posts via Cloudinary.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="py-24 px-6 max-w-7xl mx-auto text-center anim-reveal">
+        <h2 class="text-4xl font-black lobster-font mb-4 text-brand uppercase">Under the Hood</h2>
+        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-16">The Backend Logic Breakdown</p>
+
+
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 text-left">
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">01 / Data Models</h4>
+                <p class="text-sm text-gray-500 italic font-medium leading-relaxed">Referential integrity across User,
+                    Post, and Comment schemas for clean relations.</p>
+            </div>
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">02 / Auth Middleware</h4>
+                <p class="text-sm text-gray-500 italic font-medium leading-relaxed">Secure cookies and Bcrypt password
+                    hashing for session-based protection.</p>
+            </div>
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">03 / Transactional Mail</h4>
+                <p class="text-sm text-gray-500 italic font-medium leading-relaxed">Nodemailer service for automated
+                    verification and password reset workflows.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-black text-white py-24 px-6 text-center">
+        <div class="max-w-4xl mx-auto space-y-12">
+            <h2 class="text-5xl md:text-7xl font-black tracking-tighter lobster-font">Building Logic.</h2>
+            <div class="flex justify-center gap-6">
+                <a href="/Pages/contact.html"
+                    class="bg-white text-black px-10 py-4 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand hover:text-white transition-all">Start
+                    a Project</a>
+            </div>
+            <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">© 2026 Dipu Badatya Portfolio</p>
+        </div>
+    </footer>
+
+    <script>
+        const lenis = new Lenis();
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.to(".anim-hero", { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power4.out" });
+        document.querySelectorAll('.anim-reveal').forEach(el => {
+            gsap.from(el, {
+                y: 50, opacity: 0, duration: 1, ease: "power2.out",
+                scrollTrigger: { trigger: el, start: "top 85%" }
+            });
+        });
+    </script>
+
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIARY | Project Case Study</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Lobster&family=Fira+Code&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { brand: '#fb923c', dark: '#0a0a0a' },
+                    fontFamily: { lato: ['Lato', 'sans-serif'], lobster: ['Lobster', 'cursive'], mono: ['Fira Code', 'monospace'] }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: #fff;
+            color: #1a1a1a;
+        }
+
+        .bento-card {
+            border-radius: 2rem;
+            background: #fcfcfc;
+            border: 1px solid #eee;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .bento-card:hover {
+            border-color: #fb923c;
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.08);
+        }
+
+        .lobster-font {
+            font-family: 'Lobster', cursive;
+        }
+
+        .badge {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 900;
+            color: #fb923c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .responsive-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            transition: transform 0.8s ease;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-img-fix {
+                height: auto !important;
+                aspect-ratio: 4/3;
+            }
+
+            .responsive-img {
+                object-fit: contain;
+                background: #f9fafb;
+            }
+        }
+
+        .tech-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #f8f8f8;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .tech-badge:hover {
+            border-color: #fb923c;
+            background: #fff;
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden">
+
+    <nav
+        class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md h-[55px] flex items-center justify-between px-6 md:px-12 border-b border-gray-100">
+        <a href="/" class="font-black text-xl tracking-tighter"><i class="ri-gemini-fill text-brand"></i> DIPU</a>
+        <div class="flex gap-8 text-[10px] font-black uppercase tracking-widest">
+            <a href="https://github.com/dipubadatya/DIARY-WEB-APP" target="_blank" class="text-brand">View
+                Repository</a>
+            <a href="/Pages/contact.html" class="hover:text-brand transition-colors">Hire Me</a>
+        </div>
+    </nav>
+
+    <header class="pt-32 pb-16 px-6 max-w-7xl mx-auto">
+        <div class="flex items-center gap-3 mb-4 anim-hero opacity-0 translate-y-10">
+            <span class="h-[1px] w-8 bg-brand"></span>
+            <h2 class="text-xs font-bold tracking-[0.3em] uppercase text-gray-400">Full-Stack Project</h2>
+        </div>
+        <h1 class="text-6xl md:text-[8vw] leading-none lobster-font mb-6 anim-hero opacity-0 translate-y-10">Diary
+            Platform.</h1>
+        <p class="text-xl md:text-2xl text-gray-500 max-w-3xl leading-relaxed anim-hero opacity-0 translate-y-10">
+            A social writing platform where users <span class="text-gray-900 font-bold underline decoration-brand">write
+                posts, follow authors, and interact</span> through likes and comments — all updated in real time.
+        </p>
+    </header>
+
+    <div class="flex flex-wrap gap-4 mt-10 anim-hero opacity-0 flex justify-center">
+        <a href="https://diary-web-app-nine.vercel.app" target="_blank"
+            class="px-8 py-4 bg-brand text-white rounded-full font-black text-xs uppercase tracking-widest shadow-lg shadow-brand/20 hover:brightness-110 transition-all flex items-center gap-2">
+            <i class="ri-external-link-line"></i> View Live Demo
+        </a>
+        <a href="https://github.com/dipubadatya/DIARY-WEB-APP" target="_blank"
+            class="px-8 py-4 bg-white text-dark border border-gray-200 rounded-full font-black text-xs uppercase tracking-widest hover:border-brand transition-all flex items-center gap-2">
+            <i class="ri-github-fill"></i> Source Code
+        </a>
+    </div>
+
+    <!-- What is DIARY Section -->
+    <section class="py-12 px-6 max-w-7xl mx-auto anim-reveal">
+        <div class="bg-blue-50 border border-blue-100 rounded-[2rem] p-8 md:p-12">
+            <h3 class="text-xs font-black uppercase tracking-widest text-brand mb-4">About This Project</h3>
+            <p class="text-2xl md:text-3xl font-bold text-gray-900 leading-snug">
+                <span class="text-brand">DIARY</span> is a social platform built around writing. Users sign up, write
+                posts, read what others have shared, and interact through likes, comments, and follows. The backend
+                handles authentication, session management, and real-time updates. The frontend is server-rendered using
+                EJS templates.
+            </p>
+            <p class="text-lg text-gray-600 mt-6">
+                This isn't a static blog engine. It's a living, interactive platform where content flows between users
+                in real time.
+            </p>
+        </div>
+    </section>
+
+    <!-- Project Screenshots Bento Grid -->
+    <section class="px-4 md:px-10 max-w-7xl mx-auto mb-24">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+            <div class="md:col-span-8 h-[350px] md:h-[500px] bento-card relative group anim-reveal overflow-hidden">
+                <video class="w-full h-full object-cover object-center" aria-label="Glimpse of my project landing page"
+                    autoplay muted playsinline loop>
+                    <source src="/images/diary-demo-video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div class="md:col-span-4 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/diary-profile-mobile.png" class="w-full h-full object-cover object-center"
+                    alt="User Profile View">
+            </div>
+
+            <div class="md:col-span-4 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/diary-mockup-mobile (1).png" class="w-full h-full object-cover object-center"
+                    alt="Mobile Feed View">
+            </div>
+
+            <div class="md:col-span-8 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/diary-mockup-desktop.png" class="w-full h-full object-cover object-center"
+                    alt="Desktop Dashboard">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Problem & Solution Section -->
+    <section class="py-24 bg-gray-50 border-y border-gray-100 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 anim-reveal">
+                <h2 class="text-4xl font-black lobster-font mb-4 text-brand">Problems Solved</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">Building a social platform requires handling multiple
+                    technical challenges. Here's what this project addresses.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 anim-reveal">
+                <!-- Problem 1 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center mb-6">
+                        <i class="ri-shield-keyhole-line text-2xl text-red-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">User Authentication</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong
+                            class="text-gray-700">Problem:</strong> Storing passwords in plain text exposes user data.
+                        Stateless apps struggle with persistent login states.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong>
+                        Passwords are hashed using Bcrypt before storage. Sessions are managed server-side with
+                        encrypted cookies. Protected routes verify sessions before granting access.</p>
+                </div>
+
+                <!-- Problem 2 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-6">
+                        <i class="ri-refresh-line text-2xl text-blue-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Real-Time Updates</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong
+                            class="text-gray-700">Problem:</strong> Traditional HTTP requires page refresh to see new
+                        content. Users miss live interactions like new comments or likes.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong>
+                        Socket.io establishes persistent WebSocket connections. When someone likes a post or adds a
+                        comment, all connected users see it instantly without refreshing.</p>
+                </div>
+
+                <!-- Problem 3 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center mb-6">
+                        <i class="ri-image-line text-2xl text-green-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Image Storage</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong
+                            class="text-gray-700">Problem:</strong> Storing images on the server filesystem doesn't
+                        scale. It increases server load and complicates deployments.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong> All
+                        image uploads (profile pictures, post attachments) go to Cloudinary. The database stores only
+                        URLs, keeping the server lightweight.</p>
+                </div>
+
+                <!-- Problem 4 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center mb-6">
+                        <i class="ri-mail-send-line text-2xl text-purple-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Email Workflows</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong
+                            class="text-gray-700">Problem:</strong> Users forget passwords. Unverified accounts create
+                        spam. Manual email handling doesn't scale.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong>
+                        Nodemailer sends automated emails for account verification and password resets. Tokens expire
+                        after a set time for security.</p>
+                </div>
+
+                <!-- Problem 5 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center mb-6">
+                        <i class="ri-database-2-line text-2xl text-orange-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Data Relationships</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong
+                            class="text-gray-700">Problem:</strong> Social platforms have complex relationships — users
+                        follow users, comments belong to posts, posts belong to users.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong>
+                        MongoDB schemas use document references. Separate collections for Users, Posts, Comments, and
+                        Follows maintain clean relationships without data duplication.</p>
+                </div>
+
+                <!-- Problem 6 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-50 flex items-center justify-center mb-6">
+                        <i class="ri-lock-line text-2xl text-teal-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Route Protection</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong
+                            class="text-gray-700">Problem:</strong> Without proper checks, anyone can access private
+                        pages or manipulate other users' content.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong>
+                        Express middleware verifies session validity on every protected request. Users can only edit or
+                        delete their own posts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16 anim-reveal">
+            <h2 class="text-4xl font-black lobster-font mb-4 text-brand">Technology Stack</h2>
+            <p class="text-gray-500 max-w-2xl mx-auto">Each tool was chosen for a specific reason. Here's the complete
+                stack and what each piece handles.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 anim-reveal">
+            <!-- Node.js -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                        <i class="ri-nodejs-fill text-2xl text-green-600"></i>
+                    </div>
+                    <h4 class="font-black">Node.js</h4>
+                </div>
+                <p class="text-sm text-gray-500">Server runtime. Handles all backend logic, processes requests, and
+                    manages connections to external services.</p>
+            </div>
+
+            <!-- Express.js -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center">
+                        <i class="ri-server-line text-2xl text-gray-700"></i>
+                    </div>
+                    <h4 class="font-black">Express.js</h4>
+                </div>
+                <p class="text-sm text-gray-500">Web framework. Defines routes, handles middleware chains, manages
+                    sessions, and structures the application.</p>
+            </div>
+
+            <!-- MongoDB -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+                        <i class="ri-database-2-fill text-2xl text-emerald-600"></i>
+                    </div>
+                    <h4 class="font-black">MongoDB Atlas</h4>
+                </div>
+                <p class="text-sm text-gray-500">Cloud database. Stores users, posts, comments, and follow
+                    relationships. Mongoose provides schema validation.</p>
+            </div>
+
+            <!-- EJS -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
+                        <i class="ri-code-box-fill text-2xl text-yellow-600"></i>
+                    </div>
+                    <h4 class="font-black">EJS Templates</h4>
+                </div>
+                <p class="text-sm text-gray-500">Server-side rendering. Generates HTML on the server with dynamic data
+                    before sending it to the browser.</p>
+            </div>
+
+            <!-- Socket.io -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-violet-100 flex items-center justify-center">
+                        <i class="ri-broadcast-fill text-2xl text-violet-600"></i>
+                    </div>
+                    <h4 class="font-black">Socket.io</h4>
+                </div>
+                <p class="text-sm text-gray-500">WebSocket library. Pushes real-time updates to connected clients for
+                    likes, comments, and notifications.</p>
+            </div>
+
+            <!-- Cloudinary -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                        <i class="ri-cloud-fill text-2xl text-blue-600"></i>
+                    </div>
+                    <h4 class="font-black">Cloudinary</h4>
+                </div>
+                <p class="text-sm text-gray-500">Image CDN. Handles all file uploads, image optimization, and delivery.
+                    Keeps the server stateless.</p>
+            </div>
+
+            <!-- Nodemailer -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
+                        <i class="ri-mail-fill text-2xl text-red-500"></i>
+                    </div>
+                    <h4 class="font-black">Nodemailer</h4>
+                </div>
+                <p class="text-sm text-gray-500">Email service. Sends verification emails, password reset links, and
+                    transactional notifications.</p>
+            </div>
+
+            <!-- Giphy API -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-pink-100 flex items-center justify-center">
+                        <i class="ri-file-gif-fill text-2xl text-pink-500"></i>
+                    </div>
+                    <h4 class="font-black">Giphy API</h4>
+                </div>
+                <p class="text-sm text-gray-500">GIF integration. Lets users search and embed GIFs directly into their
+                    posts and comments.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features / What It Does Section -->
+    <section class="py-24 bg-gray-50 border-y border-gray-100 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 anim-reveal">
+                <h2 class="text-4xl font-black lobster-font mb-4 text-brand">Core Features</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">Everything the platform does, from user accounts to content
+                    interactions.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 anim-reveal">
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-user-add-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">User Registration & Login</h4>
+                        <p class="text-sm text-gray-500">Secure signup with hashed passwords. Session-based
+                            authentication keeps users logged in.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-edit-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Full CRUD on Posts</h4>
+                        <p class="text-sm text-gray-500">Create, read, edit, and delete posts. Authors have full control
+                            over their content.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-heart-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Likes & Comments</h4>
+                        <p class="text-sm text-gray-500">Like and unlike posts. Add comments to any post. All
+                            interactions update in real time.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-user-follow-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Follow System</h4>
+                        <p class="text-sm text-gray-500">Follow and unfollow other users. Build a personalized feed
+                            based on who you follow.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-notification-3-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Real-Time Notifications</h4>
+                        <p class="text-sm text-gray-500">Get notified instantly when someone interacts with your
+                            content. No page refresh needed.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-image-add-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Image Uploads</h4>
+                        <p class="text-sm text-gray-500">Upload profile pictures and attach images to posts. All files
+                            stored on Cloudinary.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-mail-check-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Email Verification</h4>
+                        <p class="text-sm text-gray-500">Verify accounts via email. Reset forgotten passwords through
+                            secure email links.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-search-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">User Search</h4>
+                        <p class="text-sm text-gray-500">Search for users by name. Discover new writers and see who has
+                            the most stories.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-file-gif-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">GIF Support</h4>
+                        <p class="text-sm text-gray-500">Search and embed GIFs from Giphy directly into posts and
+                            comments.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Database & Architecture Section -->
+    <div class="py-24 px-6 max-w-7xl mx-auto anim-reveal">
+        <h2 class="text-4xl font-black lobster-font mb-4 text-brand text-center">Under the Hood</h2>
+        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-16 text-center">Database Structure &
+            Application Logic</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            <div class="p-6 bg-white border border-gray-100 rounded-2xl text-center">
+                <div class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+                    <i class="ri-user-3-line text-2xl text-blue-600"></i>
+                </div>
+                <h4 class="font-black mb-2">Users</h4>
+                <p class="text-xs text-gray-500">Account credentials, profile info, metadata</p>
+            </div>
+            <div class="p-6 bg-white border border-gray-100 rounded-2xl text-center">
+                <div class="w-14 h-14 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-4">
+                    <i class="ri-article-line text-2xl text-green-600"></i>
+                </div>
+                <h4 class="font-black mb-2">Posts</h4>
+                <p class="text-xs text-gray-500">Written content, timestamps, author refs</p>
+            </div>
+            <div class="p-6 bg-white border border-gray-100 rounded-2xl text-center">
+                <div class="w-14 h-14 rounded-xl bg-purple-50 flex items-center justify-center mx-auto mb-4">
+                    <i class="ri-chat-1-line text-2xl text-purple-600"></i>
+                </div>
+                <h4 class="font-black mb-2">Comments</h4>
+                <p class="text-xs text-gray-500">Comment text, author ref, post ref</p>
+            </div>
+            <div class="p-6 bg-white border border-gray-100 rounded-2xl text-center">
+                <div class="w-14 h-14 rounded-xl bg-orange-50 flex items-center justify-center mx-auto mb-4">
+                    <i class="ri-user-follow-line text-2xl text-orange-600"></i>
+                </div>
+                <h4 class="font-black mb-2">Follows</h4>
+                <p class="text-xs text-gray-500">Follower-following relationships</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">01 / Data Models</h4>
+                <p class="text-sm text-gray-500 font-medium leading-relaxed">Mongoose schemas with document references
+                    across User, Post, Comment, and Follow collections. No embedded documents — relationships stay clean
+                    and queryable.</p>
+            </div>
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">02 / Auth Flow</h4>
+                <p class="text-sm text-gray-500 font-medium leading-relaxed">User submits credentials → password
+                    compared against Bcrypt hash → session created with encrypted cookie → middleware checks session on
+                    protected routes.</p>
+            </div>
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">03 / Project Structure</h4>
+                <p class="text-sm text-gray-500 font-medium leading-relaxed font-mono text-xs">
+                    /models → Mongoose schemas<br>
+                    /routes → Express endpoints<br>
+                    /middleware → Auth checks<br>
+                    /views → EJS templates<br>
+                    /public → Static assets
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- What This Demonstrates Section -->
+    <section class="py-16 px-6 bg-gray-50 border-y border-gray-100">
+        <div class="max-w-5xl mx-auto anim-reveal">
+            <h3 class="text-center text-xs font-black uppercase tracking-widest text-gray-400 mb-8">What This Project
+                Demonstrates</h3>
+            <div class="flex flex-wrap justify-center gap-3">
+                <span class="tech-badge">End-to-end full-stack development</span>
+                <span class="tech-badge">RESTful API design</span>
+                <span class="tech-badge">Server-side authentication</span>
+                <span class="tech-badge">Session management</span>
+                <span class="tech-badge">Password hashing</span>
+                <span class="tech-badge">Real-time WebSocket communication</span>
+                <span class="tech-badge">Third-party API integration</span>
+                <span class="tech-badge">Cloud-based file storage</span>
+                <span class="tech-badge">Transactional email systems</span>
+                <span class="tech-badge">MongoDB document relationships</span>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black text-white py-24 px-6 text-center">
+        <div class="max-w-4xl mx-auto space-y-12">
+            <h2 class="text-5xl md:text-7xl font-black tracking-tighter lobster-font">Let's Build Something.</h2>
+            <div class="flex justify-center gap-6">
+                <a href="/Pages/contact.html"
+                    class="bg-white text-black px-10 py-4 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand hover:text-white transition-all">Get
+                    In Touch</a>
+            </div>
+            <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">©<span class="date"></span>Dipu Badatya Portfolio</p>
+        </div>
+    </footer>
+
+    <script>
+        const lenis = new Lenis();
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.to(".anim-hero", { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power4.out" });
+        document.querySelectorAll('.anim-reveal').forEach(el => {
+            gsap.from(el, {
+                y: 50, opacity: 0, duration: 1, ease: "power2.out",
+                scrollTrigger: { trigger: el, start: "top 85%" }
+            });
+        });
+
+        //date
+        let dateElements = document.getElementsByClassName("date");
+
+        let today = new Date();
+        let formattedDate = today.toLocaleDateString("en-IN", {
+
+            year: "numeric"
+        });
+
+        for (let i = 0; i < dateElements.length; i++) {
+            dateElements[i].textContent = formattedDate;
+        }
+    </script>
+
+</body>
+
+</html>

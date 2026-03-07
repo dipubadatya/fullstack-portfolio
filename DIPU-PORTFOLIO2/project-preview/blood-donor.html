@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donor Tracker | Project Case Study</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Lobster&family=Fira+Code&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { brand: '#fb923c', dark: '#0a0a0a', blood: '#dc2626' },
+                    fontFamily: { lato: ['Lato', 'sans-serif'], lobster: ['Lobster', 'cursive'], mono: ['Fira Code', 'monospace'] }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: #fff;
+            color: #1a1a1a;
+        }
+
+        .bento-card {
+            border-radius: 2rem;
+            background: #fcfcfc;
+            border: 1px solid #eee;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .bento-card:hover {
+            border-color: #fb923c;
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.08);
+        }
+
+        .lobster-font {
+            font-family: 'Lobster', cursive;
+        }
+
+        .badge {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 900;
+            color: #fb923c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .responsive-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            transition: transform 0.8s ease;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-img-fix {
+                height: auto !important;
+                aspect-ratio: 4/3;
+            }
+
+            .responsive-img {
+                object-fit: contain;
+                background: #f9fafb;
+            }
+        }
+
+        .tech-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #f8f8f8;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .tech-badge:hover {
+            border-color: #fb923c;
+            background: #fff;
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden">
+
+    <nav
+        class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md h-[55px] flex items-center justify-between px-6 md:px-12 border-b border-gray-100">
+        <a href="/" class="font-black text-xl tracking-tighter"><i class="ri-gemini-fill text-brand"></i> DIPU</a>
+        <div class="flex gap-8 text-[10px] font-black uppercase tracking-widest">
+            <a href="https://github.com/dipubadatya/blood-donor-frontend" target="_blank" class="text-brand">View
+                Repository</a>
+            <a href="/Pages/contact.html" class="hover:text-brand transition-colors">Hire Me</a>
+        </div>
+    </nav>
+
+    <header class="pt-32 pb-16 px-6 max-w-7xl mx-auto">
+        <div class="flex items-center gap-3 mb-4 anim-hero opacity-0 translate-y-10">
+            <span class="h-[1px] w-8 bg-brand"></span>
+            <h2 class="text-xs font-bold tracking-[0.3em] uppercase text-gray-400">React Application</h2>
+        </div>
+        <h1 class="text-6xl md:text-[8vw] leading-none lobster-font mb-6 anim-hero opacity-0 translate-y-10">Blood Donor
+            Tracker.</h1>
+        <p class="text-xl md:text-2xl text-gray-500 max-w-3xl leading-relaxed anim-hero opacity-0 translate-y-10">
+            A location-based application that helps medical clinics <span
+                class="text-gray-900 font-bold underline decoration-brand">find nearby blood donors</span> with
+            interactive maps, role-based dashboards, and distance filtering.
+        </p>
+    </header>
+
+    <div class="flex flex-wrap gap-4 mt-10 anim-hero opacity-0 flex justify-center">
+        <a href="https://blood-donor-tracker.vercel.app" target="_blank"
+            class="px-8 py-4 bg-brand text-white rounded-full font-black text-xs uppercase tracking-widest shadow-lg shadow-brand/20 hover:brightness-110 transition-all flex items-center gap-2">
+            <i class="ri-external-link-line"></i> View Live Demo
+        </a>
+        <a href="https://github.com/dipubadatya/blood-donor-frontend" target="_blank"
+            class="px-8 py-4 bg-white text-dark border border-gray-200 rounded-full font-black text-xs uppercase tracking-widest hover:border-brand transition-all flex items-center gap-2">
+            <i class="ri-github-fill"></i> Frontend Code
+        </a>
+        <a href="https://github.com/dipubadatya/blood-donor-backend" target="_blank"
+            class="px-8 py-4 bg-white text-dark border border-gray-200 rounded-full font-black text-xs uppercase tracking-widest hover:border-brand transition-all flex items-center gap-2">
+            <i class="ri-github-fill"></i> Backend Code
+        </a>
+    </div>
+
+    <!-- About This Project Section -->
+    <section class="py-12 px-6 max-w-7xl mx-auto anim-reveal">
+        <div class="bg-red-50 border border-red-100 rounded-[2rem] p-8 md:p-12">
+            <h3 class="text-xs font-black uppercase tracking-widest text-red-500 mb-4">About This Project</h3>
+            <p class="text-2xl md:text-3xl font-bold text-gray-900 leading-snug">
+                When a patient urgently needs blood, clinics waste critical time calling through donor lists manually.
+                There's no quick way to know which donors are <span class="text-red-500">nearby, available, and have the
+                    right blood group</span>. This app puts that information on a map in seconds.
+            </p>
+        </div>
+    </section>
+
+    <!-- Role-Based Flow Section -->
+    <section class="py-12 px-6 max-w-7xl mx-auto anim-reveal">
+        <h3 class="text-xs font-black uppercase tracking-widest text-brand mb-8 text-center">Two User Roles, Two
+            Dashboards</h3>
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Donor Role -->
+            <div class="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center">
+                        <i class="ri-heart-pulse-line text-2xl text-green-600"></i>
+                    </div>
+                    <h4 class="font-black text-xl">Donors</h4>
+                </div>
+                <ul class="space-y-3 text-sm text-gray-600">
+                    <li class="flex items-start gap-3">
+                        <i class="ri-checkbox-circle-fill text-green-500 mt-0.5"></i>
+                        Update profile and location coordinates
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="ri-checkbox-circle-fill text-green-500 mt-0.5"></i>
+                        Toggle availability on or off
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="ri-checkbox-circle-fill text-green-500 mt-0.5"></i>
+                        Control visibility in search results
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Medical Staff Role -->
+            <div class="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center">
+                        <i class="ri-hospital-line text-2xl text-blue-600"></i>
+                    </div>
+                    <h4 class="font-black text-xl">Medical Staff</h4>
+                </div>
+                <ul class="space-y-3 text-sm text-gray-600">
+                    <li class="flex items-start gap-3">
+                        <i class="ri-checkbox-circle-fill text-blue-500 mt-0.5"></i>
+                        Search donors by blood group
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="ri-checkbox-circle-fill text-blue-500 mt-0.5"></i>
+                        Filter results within 5km or 10km radius
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="ri-checkbox-circle-fill text-blue-500 mt-0.5"></i>
+                        View donors on interactive map with contact details
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Screenshots Bento Grid -->
+    <!-- Project Screenshots Bento Grid -->
+    <section class="px-4 md:px-10 max-w-7xl mx-auto mb-24">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+            <div class="md:col-span-8 h-[350px] md:h-[500px] bento-card relative group anim-reveal overflow-hidden">
+                <video class="w-full h-full object-cover object-center" aria-label="Glimpse of my project landing page"
+                    autoplay muted playsinline loop>
+                    <source src="/images/blood-bonor-demo-video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div class="md:col-span-4 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/blood-donor.png" class="w-full h-full object-cover object-center"
+                    alt="User Profile View">
+            </div>
+
+            <div class="md:col-span-4 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/blood-donor-mockup-mobile.png" class="w-full h-full object-cover object-center"
+                    alt="Mobile Feed View">
+            </div>
+
+            <div class="md:col-span-8 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/blood-donor-mockup-desktop.png" class="w-full h-full object-cover object-center"
+                    alt="Desktop Dashboard">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- Problem & Solution Section -->
+    <section class="py-24 bg-gray-50 border-y border-gray-100 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 anim-reveal">
+                <h2 class="text-4xl font-black lobster-font mb-4 text-brand">Problems Solved</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">Building a location-based donor matching system requires
+                    handling several technical challenges. Here's what this project addresses.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 anim-reveal">
+                <!-- Problem 1 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center mb-6">
+                        <i class="ri-time-line text-2xl text-red-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Time-Critical Donor Search</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong
+                            class="text-gray-700">Problem:</strong> Clinics manually call through donor lists during
+                        emergencies. This wastes critical time when every minute counts.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong> Blood
+                        group filtering and distance-based search display matching donors instantly. Map markers show
+                        exactly who's available nearby.</p>
+                </div>
+
+                <!-- Problem 2 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-6">
+                        <i class="ri-map-pin-range-line text-2xl text-blue-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Distance-Based Filtering</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong
+                            class="text-gray-700">Problem:</strong> A donor 50km away isn't useful in an emergency.
+                        Results need to be filtered by proximity to the clinic.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong>
+                        Radius filters (5km, 10km) calculate distance using coordinates. Only donors within range appear
+                        on the map.</p>
+                </div>
+
+                <!-- Problem 3 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center mb-6">
+                        <i class="ri-user-settings-line text-2xl text-purple-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Role-Based Access</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong
+                            class="text-gray-700">Problem:</strong> Donors and medical staff need different interfaces.
+                        Showing search tools to donors or profile editing to staff creates confusion.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong> Role
+                        selection at registration. Protected routes redirect each role to their specific dashboard with
+                        relevant features only.</p>
+                </div>
+
+                <!-- Problem 4 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center mb-6">
+                        <i class="ri-toggle-line text-2xl text-green-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Donor Availability</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong
+                            class="text-gray-700">Problem:</strong> Donors aren't always available. Showing unavailable
+                        donors in search results wastes the clinic's time.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong>
+                        Donors toggle their availability status. Only available donors appear in medical staff search
+                        results and on the map.</p>
+                </div>
+
+                <!-- Problem 5 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center mb-6">
+                        <i class="ri-shield-keyhole-line text-2xl text-orange-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Secure Authentication</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong
+                            class="text-gray-700">Problem:</strong> Donor information is sensitive. Unauthorized access
+                        could expose personal details and contact information.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong>
+                        Token-based authentication protects all routes. Sessions persist across page refreshes.
+                        Unauthorized users get redirected to login.</p>
+                </div>
+
+                <!-- Problem 6 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-cyan-50 flex items-center justify-center mb-6">
+                        <i class="ri-refresh-line text-2xl text-cyan-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">SPA Routing on Deploy</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong
+                            class="text-gray-700">Problem:</strong> Single-page apps break on page refresh in
+                        production. Direct URL access returns 404 errors.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong>
+                        Vercel rewrite rules redirect all routes to index.html. React Router handles client-side
+                        navigation from there.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16 anim-reveal">
+            <h2 class="text-4xl font-black lobster-font mb-4 text-brand">Technology Stack</h2>
+            <p class="text-gray-500 max-w-2xl mx-auto">Each tool was chosen for a specific purpose. Here's the complete
+                stack and what each piece handles.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 anim-reveal">
+            <!-- React -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                        <i class="ri-reactjs-line text-2xl text-blue-500"></i>
+                    </div>
+                    <h4 class="font-black">React 19</h4>
+                </div>
+                <p class="text-sm text-gray-500">Frontend framework. Component-based UI with hooks for state management
+                    and side effects.</p>
+            </div>
+
+            <!-- Vite -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
+                        <i class="ri-flashlight-line text-2xl text-purple-600"></i>
+                    </div>
+                    <h4 class="font-black">Vite</h4>
+                </div>
+                <p class="text-sm text-gray-500">Build tool. Fast dev server with hot module replacement. Optimized
+                    production bundles.</p>
+            </div>
+
+            <!-- React Router -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
+                        <i class="ri-route-line text-2xl text-red-500"></i>
+                    </div>
+                    <h4 class="font-black">React Router v7</h4>
+                </div>
+                <p class="text-sm text-gray-500">Client-side routing. Handles navigation, protected routes, and
+                    role-based redirects.</p>
+            </div>
+
+            <!-- Tailwind CSS -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-100 flex items-center justify-center">
+                        <i class="ri-css3-fill text-2xl text-cyan-600"></i>
+                    </div>
+                    <h4 class="font-black">Tailwind CSS</h4>
+                </div>
+                <p class="text-sm text-gray-500">Utility-first CSS framework. Responsive design without writing custom
+                    stylesheets.</p>
+            </div>
+
+            <!-- Leaflet -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                        <i class="ri-map-pin-2-fill text-2xl text-green-600"></i>
+                    </div>
+                    <h4 class="font-black">Leaflet</h4>
+                </div>
+                <p class="text-sm text-gray-500">Mapping library with React Leaflet wrapper. OpenStreetMap tiles with
+                    dynamic marker rendering.</p>
+            </div>
+
+            <!-- Framer Motion -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-pink-100 flex items-center justify-center">
+                        <i class="ri-motion-line text-2xl text-pink-600"></i>
+                    </div>
+                    <h4 class="font-black">Framer Motion</h4>
+                </div>
+                <p class="text-sm text-gray-500">Animation library. Smooth page transitions and component animations.
+                </p>
+            </div>
+
+            <!-- Axios -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center">
+                        <i class="ri-arrow-left-right-line text-2xl text-indigo-600"></i>
+                    </div>
+                    <h4 class="font-black">Axios</h4>
+                </div>
+                <p class="text-sm text-gray-500">HTTP client. Handles API requests to the backend with interceptors for
+                    auth tokens.</p>
+            </div>
+
+            <!-- Vercel + Render -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center">
+                        <i class="ri-cloud-line text-2xl text-gray-700"></i>
+                    </div>
+                    <h4 class="font-black">Vercel + Render</h4>
+                </div>
+                <p class="text-sm text-gray-500">Deployment platforms. Vercel hosts the frontend, Render hosts the
+                    backend API.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 bg-gray-50 border-y border-gray-100 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 anim-reveal">
+                <h2 class="text-4xl font-black lobster-font mb-4 text-brand">Core Features</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">Everything the application does, from user management to map
+                    integration.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 anim-reveal">
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-search-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Blood Group Search</h4>
+                        <p class="text-sm text-gray-500">Medical staff search donors by blood type. Results filter
+                            instantly based on selection.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-radar-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Distance Filtering</h4>
+                        <p class="text-sm text-gray-500">Filter donors within 5km or 10km radius. Only nearby donors
+                            appear on the map.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-map-2-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Interactive Map</h4>
+                        <p class="text-sm text-gray-500">Leaflet map with dynamic markers. Click markers to see donor
+                            details and contact info.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-toggle-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Availability Toggle</h4>
+                        <p class="text-sm text-gray-500">Donors control their availability. Only available donors show
+                            in search results.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-user-settings-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Role-Based Dashboards</h4>
+                        <p class="text-sm text-gray-500">Donors and medical staff see different interfaces with relevant
+                            features only.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-lock-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Protected Routes</h4>
+                        <p class="text-sm text-gray-500">Token-based authentication. Unauthorized users get redirected
+                            to login.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-map-pin-user-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Location Updates</h4>
+                        <p class="text-sm text-gray-500">Donors update their coordinates manually. Locations persist in
+                            the database.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-user-add-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Registration with Roles</h4>
+                        <p class="text-sm text-gray-500">Users select their role at signup. System routes them to the
+                            correct dashboard.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-smartphone-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Responsive Design</h4>
+                        <p class="text-sm text-gray-500">Works on phones, tablets, and desktops. Same interface
+                            optimized for all screens.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <div class="py-24 px-6 max-w-7xl mx-auto anim-reveal">
+        <h2 class="text-4xl font-black lobster-font mb-4 text-brand text-center">Under the Hood</h2>
+        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-16 text-center">Frontend
+            Architecture & API Integration</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            <!-- Project Structure -->
+            <div class="anim-reveal">
+                <h3
+                    class="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mb-8 underline decoration-2 underline-offset-[12px]">
+                    Project Structure</h3>
+                <div
+                    class="bg-dark text-gray-400 p-8 rounded-[2rem] border border-gray-800 font-mono text-[11px] leading-relaxed">
+                    <p class="text-brand">frontend/</p>
+                    <p class="pl-4">├── src/</p>
+                    <p class="pl-8">├── components/ <span class="text-gray-600">// Reusable UI components</span></p>
+                    <p class="pl-8">├── pages/ <span class="text-gray-600">// Route-level components</span></p>
+                    <p class="pl-8">├── services/ <span class="text-gray-600">// API calls via Axios</span></p>
+                    <p class="pl-8">├── context/ <span class="text-gray-600">// Auth context provider</span></p>
+                    <p class="pl-8">└── App.jsx <span class="text-gray-600">// Root component</span></p>
+                    <p class="pl-4">├── public/</p>
+                    <p class="pl-4">├── vercel.json <span class="text-gray-600">// SPA rewrite rules</span></p>
+                    <p class="pl-4">└── package.json</p>
+                </div>
+            </div>
+
+            <!-- Authentication Flow -->
+            <div class="anim-reveal">
+                <h3
+                    class="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mb-8 underline decoration-2 underline-offset-[12px]">
+                    Authentication Flow</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 bg-white border border-gray-100 rounded-2xl p-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center text-brand font-black text-sm">
+                            1</div>
+                        <p class="text-sm text-gray-600">User submits login form with credentials</p>
+                    </div>
+                    <div class="flex items-center gap-4 bg-white border border-gray-100 rounded-2xl p-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center text-brand font-black text-sm">
+                            2</div>
+                        <p class="text-sm text-gray-600">Backend validates and returns JWT token</p>
+                    </div>
+                    <div class="flex items-center gap-4 bg-white border border-gray-100 rounded-2xl p-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center text-brand font-black text-sm">
+                            3</div>
+                        <p class="text-sm text-gray-600">Token stored in context and local storage</p>
+                    </div>
+                    <div class="flex items-center gap-4 bg-white border border-gray-100 rounded-2xl p-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center text-brand font-black text-sm">
+                            4</div>
+                        <p class="text-sm text-gray-600">Protected routes check token before render</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">01 / Map Rendering</h4>
+                <p class="text-sm text-gray-500 font-medium leading-relaxed">React Leaflet wraps the Leaflet library.
+                    OpenStreetMap tiles load on mount. Markers render based on filtered donor array from state.</p>
+            </div>
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">02 / Distance Calculation</h4>
+                <p class="text-sm text-gray-500 font-medium leading-relaxed">Haversine formula calculates distance
+                    between clinic and donor coordinates. Results filtered before passing to map component.</p>
+            </div>
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">03 / State Management</h4>
+                <p class="text-sm text-gray-500 font-medium leading-relaxed">React Context handles auth state globally.
+                    Component-level useState manages search filters, donor data, and UI state.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- What This Demonstrates Section -->
+    <section class="py-16 px-6 bg-gray-50 border-y border-gray-100">
+        <div class="max-w-5xl mx-auto anim-reveal">
+            <h3 class="text-center text-xs font-black uppercase tracking-widest text-gray-400 mb-8">What This Project
+                Demonstrates</h3>
+            <div class="flex flex-wrap justify-center gap-3">
+                <span class="tech-badge">React component architecture</span>
+                <span class="tech-badge">Client-side routing</span>
+                <span class="tech-badge">Token-based authentication</span>
+                <span class="tech-badge">Role-based access control</span>
+                <span class="tech-badge">Interactive map integration</span>
+                <span class="tech-badge">Distance-based filtering</span>
+                <span class="tech-badge">REST API consumption</span>
+                <span class="tech-badge">Context API state management</span>
+                <span class="tech-badge">SPA deployment configuration</span>
+                <span class="tech-badge">Responsive UI design</span>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black text-white py-24 px-6 text-center">
+        <div class="max-w-4xl mx-auto space-y-12">
+            <h2 class="text-5xl md:text-7xl font-black tracking-tighter lobster-font">Let's Build Something.</h2>
+            <div class="flex justify-center gap-6">
+                <a href="/Pages/contact.html"
+                    class="bg-white text-black px-10 py-4 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand hover:text-white transition-all">Get
+                    In Touch</a>
+            </div>
+            <p class="text-gray-500   text-[10px] uppercase font-bold tracking-widest"><span class="date"></span> Dipu
+                Badatya Portfolio</p>
+        </div>
+    </footer>
+
+    <script>
+        const lenis = new Lenis();
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.to(".anim-hero", { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power4.out" });
+        document.querySelectorAll('.anim-reveal').forEach(el => {
+            gsap.from(el, {
+                y: 50, opacity: 0, duration: 1, ease: "power2.out",
+                scrollTrigger: { trigger: el, start: "top 85%" }
+            });
+        });
+
+        let dateElements = document.getElementsByClassName("date");
+
+        let today = new Date();
+        let formattedDate = today.toLocaleDateString("en-IN", {
+
+            year: "numeric"
+        });
+
+        for (let i = 0; i < dateElements.length; i++) {
+            dateElements[i].textContent = formattedDate;
+        }
+    </script>
+
+</body>
+
+</html>

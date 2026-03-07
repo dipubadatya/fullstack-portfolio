@@ -1,0 +1,878 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Tracking | Project Case Study</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Lobster&family=Fira+Code&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { brand: '#fb923c', dark: '#0a0a0a' },
+                    fontFamily: { lato: ['Lato', 'sans-serif'], lobster: ['Lobster', 'cursive'], mono: ['Fira Code', 'monospace'] }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: #fff;
+            color: #1a1a1a;
+        }
+
+        .bento-card {
+            border-radius: 2rem;
+            background: #fcfcfc;
+            border: 1px solid #eee;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .bento-card:hover {
+            border-color: #fb923c;
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.08);
+        }
+
+        .lobster-font {
+            font-family: 'Lobster', cursive;
+        }
+
+        .badge {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 900;
+            color: #fb923c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive Image Fixes */
+        .responsive-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            transition: transform 0.8s ease;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-img-fix {
+                height: auto !important;
+                aspect-ratio: 4/3;
+            }
+
+            .responsive-img {
+                object-fit: contain;
+                background: #f9fafb;
+            }
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden">
+
+    <nav
+        class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md h-[55px] flex items-center justify-between px-6 md:px-12 border-b border-gray-100">
+        <a href="/" class="font-black text-xl tracking-tighter"><i class="ri-gemini-fill text-brand"></i> DIPU</a>
+        <div class="flex gap-8 text-[10px] font-black uppercase tracking-widest">
+            <a href="https://github.com/dipubadatya/advance_bus_tracking" target="_blank" class="text-brand">View
+                Repository</a>
+            <a href="/Pages/contact.html" class="hover:text-brand transition-colors">Hire Me</a>
+        </div>
+    </nav>
+
+    <header class="pt-32 pb-16 px-6 max-w-7xl mx-auto">
+        <div class="flex items-center gap-3 mb-4 anim-hero opacity-0 translate-y-10">
+            <span class="h-[1px] w-8 bg-brand"></span>
+            <h2 class="text-xs font-bold tracking-[0.3em] uppercase text-gray-400">Systems Engineering</h2>
+        </div>
+        <h1 class="text-6xl md:text-[8vw] leading-none lobster-font mb-6 anim-hero opacity-0 translate-y-10">Bus
+            Tracker.</h1>
+        <p class="text-xl md:text-2xl text-gray-500 max-w-3xl leading-relaxed anim-hero opacity-0 translate-y-10">
+            Eliminating uncertainty in campus commutes through <span
+                class="text-gray-900 font-bold underline decoration-brand">high-concurrency WebSocket streaming</span>
+            and real-time mapping.
+        </p>
+    </header>
+    <div class="flex flex-wrap gap-4 mt-10 anim-hero opacity-0 flex justify-center">
+        <a href="https://advance-bus-tracking-deployment.onrender.com/" target="_blank"
+            class="px-8 py-4 bg-brand text-white rounded-full font-black text-xs uppercase tracking-widest shadow-lg shadow-brand/20 hover:brightness-110 transition-all flex items-center gap-2">
+            <i class="ri-external-link-line"></i> Launch Live System
+        </a>
+        <a href="https://github.com/dipubadatya/advance_bus_tracking" target="_blank"
+            class="px-8 py-4 bg-white text-dark border border-gray-200 rounded-full font-black text-xs uppercase tracking-widest hover:border-brand transition-all flex items-center gap-2">
+            <i class="ri-github-fill"></i> View Repository
+        </a>
+    </div>
+    <section class="py-12 px-6 max-w-7xl mx-auto anim-reveal">
+        <div class="bg-orange-50 border border-orange-100 rounded-[2rem] p-8 md:p-12">
+            <h3 class="text-xs font-black uppercase tracking-widest text-brand mb-4">The Problem Solved</h3>
+            <p class="text-2xl md:text-3xl font-bold text-gray-900 leading-snug">
+                Students never know where the college bus is. This system removes the guesswork by showing <span
+                    class="text-brand">live bus positions</span> on an interactive map—updating instantly without a
+                single page refresh.
+            </p>
+        </div>
+    </section>
+
+    <section class="px-4 md:px-10 max-w-7xl mx-auto mb-24">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+            <div class="md:col-span-8 h-[350px] md:h-[500px] bento-card relative group anim-reveal overflow-hidden">
+                <video class="w-full h-full object-cover object-center" aria-label="Glimpse of my project landing page"
+                    autoplay muted playsinline loop>
+                    <source src="/images/diary-demo-video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div class="md:col-span-4 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/bus-track.png" class="w-full h-full object-cover object-center"
+                    alt="Socket Logic">
+
+            </div>
+
+            <div class="md:col-span-4 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/bus-mockup-mobile.png" class="w-full h-full object-cover object-center"
+                    alt="Social Feed">
+
+            </div>
+
+            <div class="md:col-span-8 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/bus-mockup-desktop.png" class="w-full h-full object-cover object-center"
+                    alt="Dashboard">
+
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+            </div>
+
+        </div>
+    </section>
+    <section class="py-24 bg-gray-50 border-y border-gray-100 px-6">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20">
+
+            <div class="anim-reveal">
+                <h3
+                    class="text-xs font-black uppercase tracking-[0.3em] text-brand mb-10 underline decoration-2 underline-offset-[12px]">
+                    The Tech Stack</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2 p-6 bg-white border border-gray-200 rounded-3xl shadow-sm">
+                        <i class="ri-broadcast-fill text-2xl text-violet-500"></i>
+                        <span class="text-sm font-black">Socket.io Broadcast</span>
+                    </div>
+                    <div class="flex flex-col gap-2 p-6 bg-white border border-gray-200 rounded-3xl shadow-sm">
+                        <i class="ri-map-pin-2-fill text-2xl text-blue-500"></i>
+                        <span class="text-sm font-black">Leaflet.js Mapping</span>
+                    </div>
+                    <div class="flex flex-col gap-2 p-6 bg-white border border-gray-200 rounded-3xl shadow-sm">
+                        <i class="ri-shield-keyhole-fill text-2xl text-orange-500"></i>
+                        <span class="text-sm font-black">Passport.js Auth</span>
+                    </div>
+                    <div class="flex flex-col gap-2 p-6 bg-white border border-gray-200 rounded-3xl shadow-sm">
+                        <i class="ri-database-2-fill text-2xl text-emerald-500"></i>
+                        <span class="text-sm font-black">MongoDB (Session)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="anim-reveal">
+                <h3
+                    class="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mb-10 underline decoration-2 underline-offset-[12px]">
+                    MVC Project Structure</h3>
+                <div
+                    class="bg-dark text-gray-400 p-8 rounded-[2rem] border border-gray-800 font-mono text-[11px] leading-relaxed">
+                    <p class="text-brand">bus_tracking/</p>
+                    <p class="pl-4">├── controllers/ <span class="text-gray-600">// Auth, Tracking, Dashboard</span></p>
+                    <p class="pl-4">├── socket/ <span class="text-gray-600">// socketHandler (Live Stream)</span></p>
+                    <p class="pl-4">├── models/ <span class="text-gray-600">// Driver.js, Bus.js</span></p>
+                    <p class="pl-4">├── views/ <span class="text-gray-600">// EJS Templates (Map & Dash)</span></p>
+                    <p class="pl-4">└── server.js <span class="text-gray-600">// Entry Point</span></p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="py-24 px-6 max-w-7xl mx-auto text-center anim-reveal">
+        <h2 class="text-4xl font-black lobster-font mb-4 text-brand uppercase">Under the Hood</h2>
+        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-16">The Real-Time Logic Breakdown
+        </p>
+
+
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 text-left">
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">01 / Location Capture</h4>
+                <p class="text-sm text-gray-500 italic font-medium leading-relaxed">Capturing driver coordinates via the
+                    browser's Geolocation API and emitting 'location-update' events.</p>
+            </div>
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">02 / Event Broadcast</h4>
+                <p class="text-sm text-gray-500 italic font-medium leading-relaxed">Socket.io server broadcasts location
+                    packets to all connected student clients with sub-100ms latency.</p>
+            </div>
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">03 / Map Hydration</h4>
+                <p class="text-sm text-gray-500 italic font-medium leading-relaxed">Leaflet.js dynamically updates bus
+                    marker positions on the map without requiring a page refresh.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-black text-white py-24 px-6 text-center">
+        <div class="max-w-4xl mx-auto space-y-12">
+            <h2 class="text-5xl md:text-7xl font-black tracking-tighter lobster-font">Solving Real Problems.</h2>
+            <div class="flex justify-center gap-6">
+                <a href="mailto:dipubadatya113@gmail.com"
+                    class="bg-white text-black px-10 py-4 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand hover:text-white transition-all">Start
+                    a Project</a>
+            </div>
+            <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">© 2026 Dipu Badatya • Systems
+                Engineer</p>
+        </div>
+    </footer>
+
+    <script>
+        const lenis = new Lenis();
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.to(".anim-hero", { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power4.out" });
+        document.querySelectorAll('.anim-reveal').forEach(el => {
+            gsap.from(el, {
+                y: 50, opacity: 0, duration: 1, ease: "power2.out",
+                scrollTrigger: { trigger: el, start: "top 85%" }
+            });
+        });
+    </script>
+
+</body>
+
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Tracking | Project Case Study</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Lobster&family=Fira+Code&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { brand: '#fb923c', dark: '#0a0a0a' },
+                    fontFamily: { lato: ['Lato', 'sans-serif'], lobster: ['Lobster', 'cursive'], mono: ['Fira Code', 'monospace'] }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: #fff;
+            color: #1a1a1a;
+        }
+
+        .bento-card {
+            border-radius: 2rem;
+            background: #fcfcfc;
+            border: 1px solid #eee;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .bento-card:hover {
+            border-color: #fb923c;
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.08);
+        }
+
+        .lobster-font {
+            font-family: 'Lobster', cursive;
+        }
+
+        .badge {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 900;
+            color: #fb923c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .responsive-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            transition: transform 0.8s ease;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-img-fix {
+                height: auto !important;
+                aspect-ratio: 4/3;
+            }
+
+            .responsive-img {
+                object-fit: contain;
+                background: #f9fafb;
+            }
+        }
+
+        .tech-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #f8f8f8;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .tech-badge:hover {
+            border-color: #fb923c;
+            background: #fff;
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden">
+
+    <nav
+        class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md h-[55px] flex items-center justify-between px-6 md:px-12 border-b border-gray-100">
+        <a href="/" class="font-black text-xl tracking-tighter"><i class="ri-gemini-fill text-brand"></i> DIPU</a>
+        <div class="flex gap-8 text-[10px] font-black uppercase tracking-widest">
+            <a href="https://github.com/dipubadatya/advance_bus_tracking" target="_blank" class="text-brand">View
+                Repository</a>
+            <a href="/Pages/contact.html" class="hover:text-brand transition-colors">Hire Me</a>
+        </div>
+    </nav>
+
+    <header class="pt-32 pb-16 px-6 max-w-7xl mx-auto">
+        <div class="flex items-center gap-3 mb-4 anim-hero opacity-0 translate-y-10">
+            <span class="h-[1px] w-8 bg-brand"></span>
+            <h2 class="text-xs font-bold tracking-[0.3em] uppercase text-gray-400">Full-Stack Project</h2>
+        </div>
+        <h1 class="text-6xl md:text-[8vw] leading-none lobster-font mb-6 anim-hero opacity-0 translate-y-10">Bus
+            Tracker.</h1>
+        <p class="text-xl md:text-2xl text-gray-500 max-w-3xl leading-relaxed anim-hero opacity-0 translate-y-10">
+            A real-time bus tracking application for college campuses. Drivers share their live location, students see buses <span class="text-gray-900 font-bold underline decoration-brand">moving on an interactive map</span> — updated instantly.
+        </p>
+    </header>
+
+    <div class="flex flex-wrap gap-4 mt-10 anim-hero opacity-0 flex justify-center">
+        <a href="https://advance-bus-tracking-deployment.onrender.com/" target="_blank"
+            class="px-8 py-4 bg-brand text-white rounded-full font-black text-xs uppercase tracking-widest shadow-lg shadow-brand/20 hover:brightness-110 transition-all flex items-center gap-2">
+            <i class="ri-external-link-line"></i> View Live Demo
+        </a>
+        <a href="https://github.com/dipubadatya/advance_bus_tracking" target="_blank"
+            class="px-8 py-4 bg-white text-dark border border-gray-200 rounded-full font-black text-xs uppercase tracking-widest hover:border-brand transition-all flex items-center gap-2">
+            <i class="ri-github-fill"></i> Source Code
+        </a>
+    </div>
+
+    <!-- About This Project Section -->
+    <section class="py-12 px-6 max-w-7xl mx-auto anim-reveal">
+        <div class="bg-orange-50 border border-orange-100 rounded-[2rem] p-8 md:p-12">
+            <h3 class="text-xs font-black uppercase tracking-widest text-brand mb-4">About This Project</h3>
+            <p class="text-2xl md:text-3xl font-bold text-gray-900 leading-snug">
+                Students never know where the college bus is. Is it five minutes away or twenty? Has it already left? This application removes the guesswork by showing <span class="text-brand">live bus positions</span> on a map, updated in real time.
+            </p>
+            <p class="text-lg text-gray-600 mt-6">
+                No page refresh. No delay. Just a moving dot on a map that tells you exactly where your bus is right now.
+            </p>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-12 px-6 max-w-7xl mx-auto anim-reveal">
+        <h3 class="text-xs font-black uppercase tracking-widest text-brand mb-8 text-center">How It Works</h3>
+        <div class="flex flex-col md:flex-row gap-4 items-center justify-center">
+            <div class="flex items-center gap-3 bg-white border border-gray-100 rounded-2xl px-6 py-4 shadow-sm">
+                <div class="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center text-brand font-black">1</div>
+                <span class="text-sm font-bold">Driver logs in</span>
+            </div>
+            <i class="ri-arrow-right-line text-gray-300 hidden md:block"></i>
+            <i class="ri-arrow-down-line text-gray-300 md:hidden"></i>
+            <div class="flex items-center gap-3 bg-white border border-gray-100 rounded-2xl px-6 py-4 shadow-sm">
+                <div class="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center text-brand font-black">2</div>
+                <span class="text-sm font-bold">Location captured</span>
+            </div>
+            <i class="ri-arrow-right-line text-gray-300 hidden md:block"></i>
+            <i class="ri-arrow-down-line text-gray-300 md:hidden"></i>
+            <div class="flex items-center gap-3 bg-white border border-gray-100 rounded-2xl px-6 py-4 shadow-sm">
+                <div class="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center text-brand font-black">3</div>
+                <span class="text-sm font-bold">Server broadcasts</span>
+            </div>
+            <i class="ri-arrow-right-line text-gray-300 hidden md:block"></i>
+            <i class="ri-arrow-down-line text-gray-300 md:hidden"></i>
+            <div class="flex items-center gap-3 bg-white border border-gray-100 rounded-2xl px-6 py-4 shadow-sm">
+                <div class="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center text-brand font-black">4</div>
+                <span class="text-sm font-bold">Map updates instantly</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Screenshots Bento Grid -->
+    <section class="px-4 md:px-10 max-w-7xl mx-auto mb-24">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+            <div class="md:col-span-8 h-[350px] md:h-[500px] bento-card relative group anim-reveal overflow-hidden">
+                <video class="w-full h-full object-cover object-center" aria-label="Bus tracking demo video"
+                    autoplay muted playsinline loop>
+                    <source src="/images/bus-demo-video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div class="md:col-span-4 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/bus-track.png" class="w-full h-full object-cover object-center"
+                    alt="Live Bus Tracking Map">
+            </div>
+
+            <div class="md:col-span-4 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/bus-mockup-mobile.png" class="w-full h-full object-cover object-center"
+                    alt="Mobile View">
+            </div>
+
+            <div class="md:col-span-8 h-[350px] md:h-[500px] bento-card relative anim-reveal overflow-hidden">
+                <img src="/images/bus-mockup-desktop.png" class="w-full h-full object-cover object-center"
+                    alt="Desktop Dashboard">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Problem & Solution Section -->
+    <section class="py-24 bg-gray-50 border-y border-gray-100 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 anim-reveal">
+                <h2 class="text-4xl font-black lobster-font mb-4 text-brand">Problems Solved</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">Building a real-time tracking system requires handling several technical challenges. Here's what this project addresses.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 anim-reveal">
+                <!-- Problem 1 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-6">
+                        <i class="ri-refresh-line text-2xl text-blue-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Real-Time Data Streaming</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong class="text-gray-700">Problem:</strong> Traditional HTTP requires constant polling to check for updates. This wastes bandwidth and introduces delays.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong> Socket.io establishes persistent WebSocket connections. The server pushes location updates the moment they arrive — no polling, no delay.</p>
+                </div>
+
+                <!-- Problem 2 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center mb-6">
+                        <i class="ri-map-pin-line text-2xl text-green-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Live Map Updates</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong class="text-gray-700">Problem:</strong> Static maps require page refresh to show new positions. Users lose context and the experience feels broken.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong> Leaflet.js markers update their coordinates dynamically when Socket.io events arrive. The map stays interactive while markers move smoothly.</p>
+                </div>
+
+                <!-- Problem 3 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center mb-6">
+                        <i class="ri-shield-keyhole-line text-2xl text-red-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Driver Authentication</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong class="text-gray-700">Problem:</strong> Anyone could send fake location data and corrupt the tracking system. Driver identities need verification.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong> Passport.js handles authentication. Passwords are hashed with bcrypt. Only verified drivers can broadcast their location.</p>
+                </div>
+
+                <!-- Problem 4 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center mb-6">
+                        <i class="ri-database-2-line text-2xl text-purple-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Session Persistence</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong class="text-gray-700">Problem:</strong> In-memory sessions are lost when the server restarts. Drivers would need to log in again constantly.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong> Connect-Mongo stores sessions in MongoDB. Sessions survive server restarts and can be shared across multiple server instances.</p>
+                </div>
+
+                <!-- Problem 5 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center mb-6">
+                        <i class="ri-bus-line text-2xl text-orange-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Multiple Bus Tracking</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong class="text-gray-700">Problem:</strong> A campus has multiple buses on different routes. Each needs to be tracked independently on the same map.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong> Each bus has a unique identifier. The map maintains separate markers for each bus, all updating simultaneously.</p>
+                </div>
+
+                <!-- Problem 6 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-50 flex items-center justify-center mb-6">
+                        <i class="ri-smartphone-line text-2xl text-teal-500"></i>
+                    </div>
+                    <h4 class="font-black text-lg mb-3">Cross-Device Access</h4>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-4"><strong class="text-gray-700">Problem:</strong> Students use phones, tablets, and laptops. The interface needs to work everywhere without separate apps.</p>
+                    <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-brand">Solution:</strong> Responsive design with Tailwind CSS. The same web app works on all screen sizes. No app store downloads needed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16 anim-reveal">
+            <h2 class="text-4xl font-black lobster-font mb-4 text-brand">Technology Stack</h2>
+            <p class="text-gray-500 max-w-2xl mx-auto">Each tool was chosen for a specific purpose. Here's the complete stack and what each piece handles.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 anim-reveal">
+            <!-- Node.js -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                        <i class="ri-nodejs-fill text-2xl text-green-600"></i>
+                    </div>
+                    <h4 class="font-black">Node.js</h4>
+                </div>
+                <p class="text-sm text-gray-500">Server runtime. Handles all backend logic, processes location data, and manages WebSocket connections.</p>
+            </div>
+
+            <!-- Express.js -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center">
+                        <i class="ri-server-line text-2xl text-gray-700"></i>
+                    </div>
+                    <h4 class="font-black">Express.js</h4>
+                </div>
+                <p class="text-sm text-gray-500">Web framework. Defines routes, handles middleware, manages sessions, and structures the application.</p>
+            </div>
+
+            <!-- MongoDB -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+                        <i class="ri-database-2-fill text-2xl text-emerald-600"></i>
+                    </div>
+                    <h4 class="font-black">MongoDB</h4>
+                </div>
+                <p class="text-sm text-gray-500">Database. Stores driver accounts, bus information, and persistent sessions via Connect-Mongo.</p>
+            </div>
+
+            <!-- Socket.io -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-violet-100 flex items-center justify-center">
+                        <i class="ri-broadcast-fill text-2xl text-violet-600"></i>
+                    </div>
+                    <h4 class="font-black">Socket.io</h4>
+                </div>
+                <p class="text-sm text-gray-500">WebSocket library. Streams location data from drivers to all connected student clients in real time.</p>
+            </div>
+
+            <!-- Leaflet.js -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                        <i class="ri-map-pin-2-fill text-2xl text-blue-600"></i>
+                    </div>
+                    <h4 class="font-black">Leaflet.js</h4>
+                </div>
+                <p class="text-sm text-gray-500">Mapping library. Renders interactive maps with OpenStreetMap tiles and handles live marker positioning.</p>
+            </div>
+
+            <!-- Passport.js -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
+                        <i class="ri-shield-keyhole-fill text-2xl text-orange-600"></i>
+                    </div>
+                    <h4 class="font-black">Passport.js</h4>
+                </div>
+                <p class="text-sm text-gray-500">Authentication middleware. Handles driver login with local strategy. Integrates with Express sessions.</p>
+            </div>
+
+            <!-- EJS -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center">
+                        <i class="ri-code-box-fill text-2xl text-yellow-600"></i>
+                    </div>
+                    <h4 class="font-black">EJS Templates</h4>
+                </div>
+                <p class="text-sm text-gray-500">Server-side rendering. Generates HTML on the server with dynamic data before sending to browser.</p>
+            </div>
+
+            <!-- Tailwind CSS -->
+            <div class="bento-card p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-100 flex items-center justify-center">
+                        <i class="ri-css3-fill text-2xl text-cyan-600"></i>
+                    </div>
+                    <h4 class="font-black">Tailwind CSS</h4>
+                </div>
+                <p class="text-sm text-gray-500">Utility-first CSS framework. Provides responsive design utilities for cross-device compatibility.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 bg-gray-50 border-y border-gray-100 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 anim-reveal">
+                <h2 class="text-4xl font-black lobster-font mb-4 text-brand">Core Features</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">Everything the system does, from location streaming to user management.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 anim-reveal">
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-map-pin-time-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Live Location Streaming</h4>
+                        <p class="text-sm text-gray-500">Driver coordinates captured via browser Geolocation API and streamed to all connected clients.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-map-2-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Interactive Map</h4>
+                        <p class="text-sm text-gray-500">Leaflet.js map with OpenStreetMap tiles. Bus markers move in real time without page refresh.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-user-settings-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Driver Dashboard</h4>
+                        <p class="text-sm text-gray-500">Secure dashboard for drivers to manage bus status and start/stop location sharing.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-lock-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Secure Authentication</h4>
+                        <p class="text-sm text-gray-500">Passport.js with bcrypt password hashing. Only verified drivers can broadcast locations.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-bus-2-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Multi-Bus Support</h4>
+                        <p class="text-sm text-gray-500">Track multiple buses simultaneously on the same map. Each bus has a unique marker.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-smartphone-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Responsive Design</h4>
+                        <p class="text-sm text-gray-500">Works on phones, tablets, and desktops. Same interface, optimized for every screen size.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-flashlight-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Flash Messages</h4>
+                        <p class="text-sm text-gray-500">Login/logout feedback with flash messages. Clear status updates for user actions.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-shield-check-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Protected Routes</h4>
+                        <p class="text-sm text-gray-500">Dashboard routes are protected. No session means no access to driver controls.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-brand/10 flex-shrink-0 flex items-center justify-center">
+                        <i class="ri-server-line text-brand"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black mb-1">Server-Side Rendering</h4>
+                        <p class="text-sm text-gray-500">EJS templates render HTML on the server for fast initial page loads.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <div class="py-24 px-6 max-w-7xl mx-auto anim-reveal">
+        <h2 class="text-4xl font-black lobster-font mb-4 text-brand text-center">Under the Hood</h2>
+        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-16 text-center">MVC Architecture & Real-Time Logic</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            <!-- Project Structure -->
+            <div class="anim-reveal">
+                <h3 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mb-8 underline decoration-2 underline-offset-[12px]">
+                    Project Structure</h3>
+                <div class="bg-dark text-gray-400 p-8 rounded-[2rem] border border-gray-800 font-mono text-[11px] leading-relaxed">
+                    <p class="text-brand">advance_bus_tracking/</p>
+                    <p class="pl-4">├── config/ <span class="text-gray-600">// Database connection</span></p>
+                    <p class="pl-4">├── controllers/ <span class="text-gray-600">// Auth, Dashboard, Tracking</span></p>
+                    <p class="pl-4">├── models/ <span class="text-gray-600">// Driver.js, Bus.js</span></p>
+                    <p class="pl-4">├── routes/ <span class="text-gray-600">// Express route definitions</span></p>
+                    <p class="pl-4">├── socket/ <span class="text-gray-600">// socketHandler.js</span></p>
+                    <p class="pl-4">├── views/ <span class="text-gray-600">// EJS templates</span></p>
+                    <p class="pl-4">├── public/ <span class="text-gray-600">// Static assets</span></p>
+                    <p class="pl-4">└── server.js <span class="text-gray-600">// Entry point</span></p>
+                </div>
+            </div>
+
+            <!-- Data Models -->
+            <div class="anim-reveal">
+                <h3 class="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mb-8 underline decoration-2 underline-offset-[12px]">
+                    Database Collections</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-6 bg-white border border-gray-100 rounded-2xl text-center">
+                        <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+                            <i class="ri-steering-2-line text-2xl text-blue-600"></i>
+                        </div>
+                        <h4 class="font-black mb-2">Drivers</h4>
+                        <p class="text-xs text-gray-500">Credentials, profile info, assigned bus</p>
+                    </div>
+                    <div class="p-6 bg-white border border-gray-100 rounded-2xl text-center">
+                        <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center mx-auto mb-4">
+                            <i class="ri-bus-fill text-2xl text-orange-600"></i>
+                        </div>
+                        <h4 class="font-black mb-2">Buses</h4>
+                        <p class="text-xs text-gray-500">Bus ID, route, current status</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">01 / Location Capture</h4>
+                <p class="text-sm text-gray-500 font-medium leading-relaxed">Browser Geolocation API captures driver coordinates. Socket.io client emits 'location-update' events to the server in real time.</p>
+            </div>
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">02 / Event Broadcast</h4>
+                <p class="text-sm text-gray-500 font-medium leading-relaxed">Server receives location data and broadcasts to all connected student clients. WebSocket connections stay open for continuous updates.</p>
+            </div>
+            <div class="p-8 bento-card">
+                <h4 class="font-black text-xs uppercase mb-4 text-brand tracking-widest">03 / Map Hydration</h4>
+                <p class="text-sm text-gray-500 font-medium leading-relaxed">Leaflet.js listens for Socket.io events and updates marker positions dynamically. No DOM refresh — just smooth coordinate changes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- What This Demonstrates Section -->
+    <section class="py-16 px-6 bg-gray-50 border-y border-gray-100">
+        <div class="max-w-5xl mx-auto anim-reveal">
+            <h3 class="text-center text-xs font-black uppercase tracking-widest text-gray-400 mb-8">What This Project Demonstrates</h3>
+            <div class="flex flex-wrap justify-center gap-3">
+                <span class="tech-badge">Real-time full-stack development</span>
+                <span class="tech-badge">WebSocket communication</span>
+                <span class="tech-badge">Geolocation API integration</span>
+                <span class="tech-badge">Interactive map rendering</span>
+                <span class="tech-badge">Session-based authentication</span>
+                <span class="tech-badge">Password hashing with bcrypt</span>
+                <span class="tech-badge">MVC architecture</span>
+                <span class="tech-badge">Persistent session storage</span>
+                <span class="tech-badge">Responsive UI design</span>
+                <span class="tech-badge">Server-side rendering</span>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black text-white py-24 px-6 text-center">
+        <div class="max-w-4xl mx-auto space-y-12">
+            <h2 class="text-5xl md:text-7xl font-black tracking-tighter lobster-font">Let's Build Something.</h2>
+            <div class="flex justify-center gap-6">
+                <a href="/Pages/contact.html"
+                    class="bg-white text-black px-10 py-4 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand hover:text-white transition-all">Get In Touch</a>
+            </div>
+            <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">© <span class="date"></span> Dipu Badatya Portfolio</p>
+        </div>
+    </footer>
+
+    <script>
+        const lenis = new Lenis();
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.to(".anim-hero", { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power4.out" });
+        document.querySelectorAll('.anim-reveal').forEach(el => {
+            gsap.from(el, {
+                y: 50, opacity: 0, duration: 1, ease: "power2.out",
+                scrollTrigger: { trigger: el, start: "top 85%" }
+            });
+        });
+
+          let dateElements = document.getElementsByClassName("date");
+
+        let today = new Date();
+        let formattedDate = today.toLocaleDateString("en-IN", {
+
+            year: "numeric"
+        });
+
+        for (let i = 0; i < dateElements.length; i++) {
+            dateElements[i].textContent = formattedDate;
+        }
+    </script>
+
+</body>
+
+</html>
