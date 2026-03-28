@@ -160,19 +160,27 @@
             width: max-content;
         }
 
-        /* Mobile Menu */
-        .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: all 0.4s ease-in-out;
-            visibility: hidden;
+        /* Mobile Menu Open State */
+        #mobileMenu.open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
         }
 
-        .mobile-menu.open {
-            max-height: 400px;
-            opacity: 1;
-            visibility: visible;
+        /* Hamburger Morphing */
+        .ham-active #bar1 {
+            transform: translateY(4px) rotate(45deg);
+            width: 24px;
+        }
+
+        .ham-active #bar2 {
+            transform: translateY(-4px) rotate(-45deg);
+            width: 24px;
+        }
+
+        /* Navbar Hide on Scroll Logic */
+        #navbar.nav-hidden {
+            transform: translate(-50%, -120%);
         }
 
         /* HIGHLIGHTER ANIMATION STYLE */
@@ -239,35 +247,45 @@
         </div>
     </div>
 
-    <nav
-        class="w-full h-[55px] flex items-center justify-between px-5 md:px-10 pb-2 pt-0 relative z-50 bg-white border-b border-gray-100">
-        <div class="navo-logo pl-2">
-            <a href="#" class="font-medium lato-regular text-[20px] leading-[20px] tracking-tighter">
+    <nav id="navbar"
+        class="fixed top-0 md:top-6 left-1/2 -translate-x-1/2 w-full md:w-[90%] max-w-[1200px] h-[65px] flex items-center justify-between px-6 md:px-10 z-[1000] bg-white/80 backdrop-blur-md border-b md:border border-gray-100 md:rounded-full transition-all duration-500 md:shadow-sm hover:shadow-md">
+
+        <div class="navo-logo">
+            <a href="#" class="lato-bold text-[22px] tracking-tighter flex items-center gap-2">
                 <i class="ri-gemini-fill text-orange-400"></i> DIPU
             </a>
         </div>
-        <div class="nav-links hidden md:flex gap-7 pr-3 text-[16px] lato-bold leading-[22.4px]">
-            <!-- <a href="/Pages/projects.html" class="hover:text-orange-400 transition-colors">Work</a> -->
-            <a href="/Pages/about.html" class="hover:text-orange-400 transition-colors">About</a>
-            <a class="resume-link hover:text-orange-400 transition-colors" target="_blank" rel="noopener noreferrer">
-                Resume
+
+        <div class="nav-links hidden md:flex items-center gap-10 text-[15px] lato-bold">
+            <a href="/Pages/about.html" class="relative group py-2 text-gray-600 hover:text-black transition-colors">
+                About
+                <span
+                    class="absolute bottom-0 left-0 w-0 h-[2px] bg-orange-400 transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <a href="/Pages/contact.html" class="hover:text-orange-400 transition-colors">Contact</a>
+            <a class="resume-link relative group py-2 text-gray-600 hover:text-black transition-colors cursor-pointer"
+                target="_blank">
+                Resume
+                <span
+                    class="absolute bottom-0 left-0 w-0 h-[2px] bg-orange-400 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="/Pages/contact.html"
+                class="bg-black text-white px-6 py-2 rounded-full hover:bg-orange-400 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/5">
+                Contact
+            </a>
         </div>
-        <div class="hamburger md:hidden pr-3 cursor-pointer" id="hamburger">
-            <i class="ri-menu-line text-2xl"></i>
+
+        <div class="hamburger md:hidden cursor-pointer p-2 flex flex-col gap-1.5 items-end" id="hamburger">
+            <div class="w-6 h-[2px] bg-black transition-all duration-300 origin-center" id="bar1"></div>
+            <div class="w-4 h-[2px] bg-black transition-all duration-300 origin-center" id="bar2"></div>
         </div>
-        <div class="mobile-menu md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 z-40"
-            id="mobileMenu">
-            <!-- <a href="/Pages/projects.html"
-                class="block py-4 px-5 lato-bold hover:bg-gray-50 text-gray-800 border-b border-gray-100">Work</a> -->
+
+        <div id="mobileMenu"
+            class="fixed inset-0 top-[65px] left-0 w-full h-[calc(100vh-65px)] bg-white/95 backdrop-blur-xl z-40 md:hidden flex flex-col items-center justify-center gap-8 opacity-0 pointer-events-none -translate-y-5 transition-all duration-500">
             <a href="/Pages/about.html"
-                class="block py-4 px-5 lato-bold hover:bg-gray-50 text-gray-800 border-b border-gray-100">About</a>
-            <a class="resume-link block py-4 px-5 lato-bold hover:bg-gray-50 text-gray-800 border-b border-gray-100"
-                target="_blank" rel="noopener noreferrer">
-                Resume
-            </a>
-            <a href="/Pages/contact.html" class="block py-4 px-5 lato-bold hover:bg-gray-50 text-orange-400">Contact</a>
+                class="text-4xl lato-black tracking-tighter hover:text-orange-400 transition-colors">About</a>
+            <a
+                class="resume-link text-4xl lato-black tracking-tighter hover:text-orange-400 transition-colors">Resume</a>
+            <a href="/Pages/contact.html" class="text-4xl lato-black tracking-tighter text-orange-400">Contact</a>
         </div>
     </nav>
 
@@ -287,7 +305,7 @@
 
         <div
             class="w-full max-w-[1400px] h-[50vh] md:h-[75vh] rounded-[2rem] md:rounded-[3rem] overflow-hidden relative shadow-2xl anim-hero opacity-0 translate-y-20 z-10">
-            <img src="images/photo_2026-02-16_10-23-54 (5).jpg"
+            <img src="images/profile.jpg"
                 class="w-full h-full object-cover parallax-hero-img scale-110">
             <div class="absolute inset-0 bg-black/10"></div>
         </div>
@@ -821,7 +839,7 @@
         </div>
     </section>
 
-    <section class="w-full bg-white py-20 px-6 border-y border-gray-50 my-10">
+    <!-- <section class="w-full bg-white py-20 px-6 border-y border-gray-50 my-10">
         <div class="max-w-4xl mx-auto text-center anim-reveal">
             <div class="mb-6">
                 <i class="ri-double-quotes-l text-4xl md:text-5xl text-orange-400 opacity-80 inline-block"></i>
@@ -834,8 +852,24 @@
                 <span class="h-[1px] w-8 bg-orange-400"></span>
             </div>
         </div>
-    </section>
+    </section> -->
+    <section class="w-full bg-white py-20 px-6 border-y border-gray-50 my-10">
+        <div class="max-w-4xl mx-auto text-center anim-reveal">
+            <div class="mb-6">
+                <i class="ri-double-quotes-l text-4xl md:text-5xl text-orange-400 opacity-80 inline-block"></i>
+            </div>
+            <h2 class="quote-font text-3xl md:text-5xl md:leading-tight text-gray-900 mb-8">
+                "It’s not about ideas. It’s about making ideas happen."
+            </h2>
+            <div class="flex items-center justify-center gap-4">
+                <span class="h-[1px] w-8 bg-orange-400"></span>
+                <p class="lato-bold text-xs md:text-sm text-gray-500 uppercase tracking-[3px]">Scott Belsky</p>
+                <span class="h-[1px] w-8 bg-orange-400"></span>
+            </div>
+        </div>
 
+
+    </section>
     <footer class="bg-black text-white py-16 lato-regular border-t border-gray-900">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
@@ -898,9 +932,10 @@
             </div>
         </div>
         <div class="container mx-auto px-4 text-center">
-           
-      
-            <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">©<span class="date"></span> | Dipu Badatya Portfolio</p>
+
+
+            <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest">©<span class="date"></span> | Dipu
+                Badatya Portfolio</p>
         </div>
         </div>
     </footer>
@@ -1018,11 +1053,40 @@
         // 9. Mobile Menu
         const hamburger = document.getElementById('hamburger');
         const mobileMenu = document.getElementById('mobileMenu');
-        hamburger.addEventListener('click', () => { mobileMenu.classList.toggle('open'); });
+        const navbar = document.getElementById('navbar');
+
+        // 1. Toggle Mobile Menu
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mobileMenu.classList.toggle('open');
+            hamburger.classList.toggle('ham-active');
+
+            // Prevent background scrolling when menu is open
+            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : 'auto';
+        });
+
+        // 2. Close menu on outside click
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('#hamburger') && !e.target.closest('#mobileMenu')) {
+            if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target)) {
                 mobileMenu.classList.remove('open');
+                hamburger.classList.remove('ham-active');
+                document.body.style.overflow = 'auto';
             }
+        });
+
+        // 3. Smart Hide Navbar on Scroll
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > lastScroll && currentScroll > 150) {
+                // Scrolling Down
+                navbar.classList.add('nav-hidden');
+            } else {
+                // Scrolling Up
+                navbar.classList.remove('nav-hidden');
+            }
+            lastScroll = currentScroll;
         });
 
         // 10. Desk Section Animations (Unified Timeline Fix)
@@ -1121,6 +1185,7 @@
             dateElements[i].textContent = formattedDate;
         }
     </script>
+
 </body>
 
 </html>

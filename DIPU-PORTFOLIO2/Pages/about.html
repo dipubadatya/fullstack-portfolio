@@ -66,19 +66,27 @@
             transition: all 0.3s ease;
         }
 
-        .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
+        /* Mobile Menu Open State */
+        #mobileMenu.open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
         }
 
-        .mobile-menu.open {
-            max-height: 300px;
+        /* Hamburger Morphing */
+        .ham-active #bar1 {
+            transform: translateY(4px) rotate(45deg);
+            width: 24px;
         }
 
-        .hamburger {
-            display: none;
-            cursor: pointer;
+        .ham-active #bar2 {
+            transform: translateY(-4px) rotate(-45deg);
+            width: 24px;
+        }
+
+        /* Navbar Hide on Scroll Logic */
+        #navbar.nav-hidden {
+            transform: translate(-50%, -120%);
         }
 
         /* Responsive adjustments */
@@ -149,39 +157,47 @@
 <body class="overflow-x-hidden bg-white">
 
     <!-- Responsive Navbar -->
-    <nav class="w-full h-[55px] flex items-center justify-between px-5 md:px-10 pb-2 pt-0 relative">
-        <div class="navo-logo pl-2">
-            <a href="/index.html" class="font-medium lato-regular text-[20px] leading-[20px] tracking-tighter">
+    <nav id="navbar"
+        class="fixed top-0 md:top-6 left-1/2 -translate-x-1/2 w-full md:w-[90%] max-w-[1200px] h-[65px] flex items-center justify-between px-6 md:px-10 z-[1000] bg-white/80 backdrop-blur-md border-b md:border border-gray-100 md:rounded-full transition-all duration-500 md:shadow-sm hover:shadow-md">
+
+        <div class="navo-logo">
+            <a href="/index.html" class="lato-bold text-[22px] tracking-tighter flex items-center gap-2">
                 <i class="ri-gemini-fill text-orange-400"></i> DIPU
             </a>
         </div>
 
-        <!-- Desktop Navigation -->
-        <div class="nav-links hidden md:flex gap-7 pr-3 text-[16px] lato-bold leading-[22.4px] font-regular">
-        
-            <a href="about.html">About</a>
-           <a class="resume-link" target="_blank" rel="noopener noreferrer">
-                 Resume
+        <div class="nav-links hidden md:flex items-center gap-10 text-[15px] lato-bold">
+            <a href="/Pages/about.html" class="relative group py-2 text-gray-600 hover:text-black transition-colors">
+                About
+                <span
+                    class="absolute bottom-0 left-0 w-0 h-[2px] bg-orange-400 transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <a href="contact.html">Contact</a>
+            <a class="resume-link relative group py-2 text-gray-600 hover:text-black transition-colors cursor-pointer"
+                target="_blank">
+                Resume
+                <span
+                    class="absolute bottom-0 left-0 w-0 h-[2px] bg-orange-400 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="/Pages/contact.html"
+                class="bg-black text-white px-6 py-2 rounded-full hover:bg-orange-400 hover:scale-105 transition-all duration-300 shadow-lg shadow-black/5">
+                Contact
+            </a>
         </div>
 
-        <!-- Mobile Hamburger -->
-        <div class="hamburger md:hidden pr-3" id="hamburger">
-            <i class="ri-menu-line text-2xl"></i>
+        <div class="hamburger md:hidden cursor-pointer p-2 flex flex-col gap-1.5 items-end" id="hamburger">
+            <div class="w-6 h-[2px] bg-black transition-all duration-300 origin-center" id="bar1"></div>
+            <div class="w-4 h-[2px] bg-black transition-all duration-300 origin-center" id="bar2"></div>
         </div>
 
-        <!-- Mobile Menu -->
-        <div class="mobile-menu md:hidden w-full" id="mobileMenu">
-        
-            <a href="about.html" class="block py-3 px-5">About</a>
-           <a class="resume-link block py-3 px-5" target="_blank" rel="noopener noreferrer">
-                 Resume
-            </a>
-            <a href="contact.html" class="block py-3 px-5">Contact</a>
+        <div id="mobileMenu"
+            class="fixed inset-0 top-[65px] left-0 w-full h-[calc(100vh-65px)] bg-white/95 backdrop-blur-xl z-40 md:hidden flex flex-col items-center justify-center gap-8 opacity-0 pointer-events-none -translate-y-5 transition-all duration-500">
+            <a href="/Pages/about.html"
+                class="text-4xl lato-black tracking-tighter hover:text-orange-400 transition-colors">About</a>
+            <a
+                class="resume-link text-4xl lato-black tracking-tighter hover:text-orange-400 transition-colors">Resume</a>
+            <a href="/Pages/contact.html" class="text-4xl lato-black tracking-tighter text-orange-400">Contact</a>
         </div>
     </nav>
-
 
     <!-- Hero Section -->
     <div class="container mx-auto px-4 py-16 md:py-24">
@@ -314,7 +330,7 @@
                                 <i class="fas fa-database text-green-700 text-xl mr-3"></i>
                                 <span class="lato-regular">MongoDB</span>
                             </li>
-                               <li class="flex items-center">
+                            <li class="flex items-center">
                                 <i class="fas fa-database text-green-700 text-xl mr-3"></i>
                                 <span class="lato-regular">Socket.IO</span>
                             </li>
@@ -352,7 +368,7 @@
                         <p class="lato-regular text-gray-600">Berhampur | Computer-science - B.Tech | CGPA: 8</p>
                     </div>
 
-                 
+
                     <div class="border-l-4 border-black pl-6 py-2">
                         <h3 class="text-xl lato-bold">Delta Batch- Web Development</h3>
                         <p class="lato-regular text-gray-600">Online | Course</p>
@@ -366,10 +382,11 @@
                 <p class="text-gray-600 lato-regular mb-6 max-w-2xl mx-auto">
                     I'm always open to discussing new projects, creative ideas or opportunities to be part of your team.
                 </p>
-           
+
             </div>
         </div>
     </div>
+    
     <footer class="bg-black text-white py-16 lato-regular">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -402,7 +419,8 @@
                             class="text-2xl hover:text-orange-400 transition-colors">
                             <i class="ri-linkedin-fill"></i>
                         </a>
-                        <a href="https://github.com/dipubadatya" class="text-2xl hover:text-orange-400 transition-colors">
+                        <a href="https://github.com/dipubadatya"
+                            class="text-2xl hover:text-orange-400 transition-colors">
                             <i class="ri-github-fill"></i>
                         </a>
                         <!-- <a href="https://www.instagram.com/_pstarz/"
@@ -414,12 +432,13 @@
 
                 <!-- Copyright Column -->
                 <div
-                class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
-                <!-- <p>© 2025 Dipu Badatya. All rights reserved.</p> -->
-                <p class="flex items-center gap-1">Made with <i class="ri-heart-fill text-red-500 animate-pulse"></i> &
-                    <i class="ri-music-2-fill text-orange-400"></i>
-                </p>
-            </div>
+                    class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+                    <!-- <p>© 2025 Dipu Badatya. All rights reserved.</p> -->
+                    <p class="flex items-center gap-1">Made with <i
+                            class="ri-heart-fill text-red-500 animate-pulse"></i> &
+                        <i class="ri-music-2-fill text-orange-400"></i>
+                    </p>
+                </div>
             </div>
         </div>
     </footer>
@@ -480,38 +499,47 @@
 
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const hamburger = document.getElementById('hamburger');
-            const mobileMenu = document.getElementById('mobileMenu');
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const navbar = document.getElementById('navbar');
 
-            hamburger.addEventListener('click', () => {
-                mobileMenu.classList.toggle('open');
-            });
+        // 1. Toggle Mobile Menu
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mobileMenu.classList.toggle('open');
+            hamburger.classList.toggle('ham-active');
 
-            // Close menu when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('#hamburger') && !e.target.closest('#mobileMenu')) {
-                    mobileMenu.classList.remove('open');
-                }
-            });
+            // Prevent background scrolling when menu is open
+            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : 'auto';
         });
 
-          let dateElements = document.getElementsByClassName("date");
-
-        let today = new Date();
-        let formattedDate = today.toLocaleDateString("en-IN", {
-
-            year: "numeric"
+        // 2. Close menu on outside click
+        document.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target)) {
+                mobileMenu.classList.remove('open');
+                hamburger.classList.remove('ham-active');
+                document.body.style.overflow = 'auto';
+            }
         });
 
-        for (let i = 0; i < dateElements.length; i++) {
-            dateElements[i].textContent = formattedDate;
-        }
+        // 3. Smart Hide Navbar on Scroll
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > lastScroll && currentScroll > 150) {
+                // Scrolling Down
+                navbar.classList.add('nav-hidden');
+            } else {
+                // Scrolling Up
+                navbar.classList.remove('nav-hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
     </script>
 </body>
 
 <script src="/index.js"></script>
 
 </html>
-
-

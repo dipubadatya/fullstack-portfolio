@@ -1,4 +1,4 @@
-const RESUME_LINK = "https://drive.google.com/file/d/1IY0Dq8728HkOcVWwJVsbKeT3uPx0Sl5f/view?usp=drive_link";
+const RESUME_LINK = "https://drive.google.com/file/d/1gkD7Cxlt3g6smseMWlmfQHN2E9S-qOqw/view?usp=sharing";
 
 document.addEventListener("DOMContentLoaded", function () {
   const resumeLinks = document.querySelectorAll(".resume-link");
