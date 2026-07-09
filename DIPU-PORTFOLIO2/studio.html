@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSTZ Studio | We Build Digital Experiences</title>
+    
+    <!-- Icons & Fonts -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- GSAP & Tailwind -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: {
+                        ranga: {
+                            100: '#1E1B4B', // Deep Navy
+                            200: '#6366F1', // Indigo
+                            300: '#F43F5E', // Rose
+                            400: '#ADFF2F', // Lime Green
+                            500: '#F5F3FF', // Off-White
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root { 
+            --bg: #1E1B4B;
+            --text: #F5F3FF;
+            --accent: #ADFF2F;
+        }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            overflow-x: hidden; 
+            /* Hide default cursor only on non-touch devices */
+            @media (pointer: fine) { cursor: none; }
+        }
+
+        /* Subtle Grain Overlay for Awwwards Texture */
+        .noise::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        
+        /* Ambient Background Glow */
+        .bloop {
+            position: fixed; 
+            width: 40vw; height: 40vw;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 60%);
+            opacity: 0.05; 
+            border-radius: 50%; 
+            pointer-events: none; 
+            z-index: 0;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            width: 12px; height: 12px; 
+            background: var(--accent);
+            position: fixed; 
+            border-radius: 50%; 
+            pointer-events: none; 
+            z-index: 999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+        }
+        .custom-cursor.hover-state {
+            width: 40px; height: 40px;
+            background: rgba(173, 255, 47, 0.2);
+            backdrop-filter: blur(2px);
+            border: 1px solid var(--accent);
+        }
+
+        /* Hide cursor elements on mobile */
+        @media (max-width: 768px) {
+            .custom-cursor, .bloop { display: none; }
+        }
+
+        /* Typography Scaling */
+        .text-hero { font-size: clamp(2.5rem, 8vw, 6.5rem); line-height: 1; letter-spacing: -0.04em; }
+        .text-display { font-size: clamp(2rem, 6vw, 4.5rem); line-height: 1; letter-spacing: -0.02em; }
+        
+        /* Awwwards Style Image Parallax Container */
+        .work-card { overflow: hidden; position: relative; display: block; border-radius: 8px; }
+        .work-card-inner { width: 100%; height: 100%; overflow: hidden; }
+        .work-card img { 
+            width: 100%; height: 120%; /* Extra height for parallax */
+            object-fit: cover; 
+            filter: grayscale(80%) contrast(1.1);
+            transition: filter 0.8s ease;
+        }
+        .work-card:hover img { filter: grayscale(0%) contrast(1); }
+        
+        .work-card .overlay { 
+            background: linear-gradient(to top, rgba(30, 27, 75, 0.9), transparent); 
+            opacity: 0; 
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            transform: translateY(10px);
+        }
+        .work-card:hover .overlay { opacity: 1; transform: translateY(0); }
+
+        .line-grow { height: 1px; background: rgba(245, 243, 255, 0.15); width: 100%; transform-origin: left; transform: scaleX(0); }
+        
+        ::selection { background: var(--accent); color: var(--bg); }
+    </style>
+</head>
+<body class="font-sans antialiased noise">
+    <div class="custom-cursor" id="cursor"></div>
+    <div class="bloop" id="bloop"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 p-6 md:p-8 flex justify-between items-center mix-blend-difference">
+        <a href="#" class="text-2xl font-bold tracking-tighter text-ranga-500 hover-target">PSTZ<span class="text-ranga-400">.</span></a>
+        <div class="flex gap-8 text-xs font-bold uppercase tracking-widest items-center text-ranga-500">
+            <a href="#work" class="hidden md:block hover:text-ranga-400 transition-colors hover-target">Work</a>
+            <a href="#initiative" class="hidden md:block hover:text-ranga-400 transition-colors hover-target">Initiative</a>
+            <!-- Magnetic Button -->
+            <a href="https://instagram.com/pstzstudio" target="_blank" class="magnetic-btn bg-ranga-300 text-ranga-500 px-6 py-3 rounded-full hover:bg-ranga-200 transition-colors hover-target inline-block">
+                Say Hello
+            </a>
+        </div>
+    </nav>
+
+    <main class="relative z-10">
+        <!-- Hero Section -->
+        <section class="min-h-screen flex flex-col justify-center px-6 md:px-16 pt-20">
+            <div class="max-w-6xl">
+                <p class="text-ranga-400 font-bold uppercase tracking-[0.3em] text-xs mb-6 stagger-reveal">Frontend Developer</p>
+                <h1 class="text-hero font-extrabold mb-10 stagger-reveal">
+                    We build fast, modern<br>landing pages for <span class="text-ranga-400 italic">real</span> businesses.
+                </h1>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 mt-12">
+                    <div class="md:col-span-8 stagger-reveal">
+                        <p class="text-lg md:text-xl font-light leading-relaxed text-ranga-500/80">
+                            If your business doesn’t have a proper website yet, we’ll help you launch one — clean, simple, and effective. No complexity. Just good design and working code.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Work Section -->
+        <section id="work" class="py-32 px-6 md:px-16">
+            <div class="line-grow mb-16 work-line"></div>
+            <div class="flex flex-col md:flex-row justify-between items-baseline mb-20 gap-4">
+                <div>
+                    <h2 class="text-display font-extrabold">Selected Work.</h2>
+                    <p class="text-ranga-500/80 mt-4 max-w-lg font-light text-lg">Real projects and UI explorations focused on clean design and performance.</p>
+                </div>
+                <span class="text-sm font-medium px-4 py-1 rounded-full border border-ranga-500/20 text-ranga-400 shrink-0">04 Projects</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
+                <!-- Project 1 -->
+                <a href="https://sanshop7.netlify.app/" class="work-card group hover-target reveal-up mt-0 md:mt-24">
+                    <div class="work-card-inner aspect-[4/3]">
+                        <img src="https://pstarz.vercel.app/images/sanshop.png" alt="SanShop Ecom" class="parallax-img">
+                    </div>
+                    <div class="overlay absolute inset-0 p-8 flex flex-col justify-end">
+                        <p class="text-xs uppercase tracking-widest text-ranga-400 mb-2">Concept Project</p>
+                        <h4 class="text-3xl font-bold">SanShop — E-commerce Landing UI</h4>
+                    </div>
+                </a>
+
+                <!-- Project 2 -->
+                <a href="https://aniwave7.netlify.app/" class="work-card group hover-target reveal-up">
+                    <div class="work-card-inner aspect-[4/3]">
+                        <img src="https://pstarz.vercel.app/images/aniwave7.png" alt="Aniwave Branding" class="parallax-img">
+                    </div>
+                    <div class="overlay absolute inset-0 p-8 flex flex-col justify-end">
+                        <p class="text-xs uppercase tracking-widest text-ranga-400 mb-2">Concept Project</p>
+                        <h4 class="text-3xl font-bold">Aniwave — Brand Identity UI</h4>
+                    </div>
+                </a>
+
+                <!-- Project 3 -->
+                <a href="#" class="work-card group hover-target reveal-up mt-0 md:mt-24">
+                    <div class="work-card-inner aspect-[4/3]">
+                        <img src="https://pstarz.vercel.app/images/Leafy.png" alt="Leafy Project" class="parallax-img">
+                    </div>
+                    <div class="overlay absolute inset-0 p-8 flex flex-col justify-end">
+                        <p class="text-xs uppercase tracking-widest text-ranga-400 mb-2">In Progress</p>
+                        <h4 class="text-3xl font-bold">Leafy — Platform UI</h4>
+                    </div>
+                </a>
+
+                <!-- Project 4 -->
+                <a href="https://shinchan-kdg.netlify.app/" class="work-card group hover-target reveal-up">
+                    <div class="work-card-inner aspect-[4/3]">
+                        <img src="https://pstarz.vercel.app/images/kdg.png" alt="KDG Fun Flow" class="parallax-img">
+                    </div>
+                    <div class="overlay absolute inset-0 p-8 flex flex-col justify-end">
+                        <p class="text-xs uppercase tracking-widest text-ranga-400 mb-2">Client Project</p>
+                        <h4 class="text-3xl font-bold">KDG Fun Flow — Web App Interface</h4>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Initiative Section -->
+        <section id="initiative" class="py-32 px-6 md:px-16 bg-ranga-200/10">
+            <div class="line-grow mb-16 init-line"></div>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
+                <div class="md:col-span-5">
+                    <h2 class="text-display font-extrabold mb-6">The Free Start.</h2>
+                    <p class="text-ranga-300 font-bold uppercase tracking-[0.2em] text-xs">Helping new businesses go online</p>
+                    
+                    <p class="text-lg text-ranga-500/80 font-light leading-relaxed mt-10">
+                        Starting a business is already hard. A website shouldn’t be the reason you stay invisible.<br><br>
+                        We build simple, modern landing pages for selected new businesses — <span class="text-ranga-400 font-medium">completely free.</span>
+                    </p>
+                    <p class="text-sm font-bold uppercase tracking-widest text-ranga-400 mt-8">Limited slots. Focused work.</p>
+                </div>
+                
+                <div class="md:col-span-7 mt-4 md:mt-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-12 mb-16">
+                        <!-- What you get -->
+                        <div class="reveal-text">
+                            <h3 class="text-xl font-bold mb-6 text-ranga-400 border-b border-ranga-400/20 pb-4">What you get</h3>
+                            <ul class="space-y-4 text-ranga-500/80 font-light">
+                                <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-ranga-400 shrink-0"></i> Clean, responsive landing page</li>
+                                <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-ranga-400 shrink-0"></i> Fast deployment (Netlify / Vercel)</li>
+                                <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-ranga-400 shrink-0"></i> Mobile-friendly design</li>
+                                <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-ranga-400 shrink-0"></i> Basic SEO-ready structure</li>
+                            </ul>
+                        </div>
+
+                        <!-- In return -->
+                        <div class="reveal-text">
+                            <h3 class="text-xl font-bold mb-6 text-ranga-400 border-b border-ranga-400/20 pb-4">In return</h3>
+                            <ul class="space-y-4 text-ranga-500/80 font-light">
+                                <li class="flex items-center gap-3"><i data-lucide="message-square" class="w-5 h-5 text-ranga-400 shrink-0"></i> Honest feedback</li>
+                                <li class="flex items-center gap-3"><i data-lucide="eye" class="w-5 h-5 text-ranga-400 shrink-0"></i> Permission to showcase the work</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- How it works -->
+                    <div class="reveal-text bg-ranga-100/50 p-8 md:p-10 rounded-2xl border border-ranga-500/10">
+                        <h3 class="text-2xl font-bold mb-8 text-ranga-500">How it works</h3>
+                        <div class="space-y-6 text-ranga-500/80 font-light text-lg">
+                            <div class="flex gap-4 items-center">
+                                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-ranga-400/10 text-ranga-400 font-bold shrink-0">1</span>
+                                <p>You share your business idea</p>
+                            </div>
+                            <div class="flex gap-4 items-center">
+                                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-ranga-400/10 text-ranga-400 font-bold shrink-0">2</span>
+                                <p>We design & build your landing page</p>
+                            </div>
+                            <div class="flex gap-4 items-center">
+                                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-ranga-400/10 text-ranga-400 font-bold shrink-0">3</span>
+                                <p>We deploy it live for free</p>
+                            </div>
+                            <div class="flex gap-4 items-center">
+                                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-ranga-400/10 text-ranga-400 font-bold shrink-0">4</span>
+                                <p>You review the work</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-ranga-400 font-bold mt-10 uppercase tracking-widest">Simple and transparent.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer / CTA -->
+        <section class="py-40 px-6 text-center">
+            <div class="max-w-4xl mx-auto reveal-up">
+                <h3 class="text-hero font-extrabold mb-6">Got a business idea?</h3>
+                <p class="text-2xl text-ranga-500/90 mb-4 font-light">Let’s build something real.</p>
+                <p class="text-sm md:text-base text-ranga-400 mb-12 flex items-center justify-center gap-2">
+                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    Currently working with early-stage businesses and local brands.
+                </p>
+                
+                <a href="https://www.instagram.com/ranglab_/" target="_blank" class="text-3xl md:text-5xl font-extrabold text-ranga-400 hover:text-ranga-300 transition-colors hover-target inline-block relative after:content-[''] after:absolute after:w-full after:h-1 after:bg-ranga-300 after:bottom-0 after:left-0 after:origin-right after:scale-x-0 hover:after:scale-x-100 hover:after:origin-left after:transition-transform after:duration-300 pb-2">
+                    Message us @ranglab_
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="p-8 border-t border-ranga-500/10 flex flex-col md:flex-row justify-between items-center text-xs font-medium uppercase tracking-widest text-ranga-500/50">
+        <p>© 2026 PSTZ Studio. Built by RangLab.</p>
+        <div class="flex gap-8 mt-6 md:mt-0">
+            <a href="https://www.instagram.com/ranglab_/" class="hover:text-ranga-400 transition-colors hover-target">Instagram</a>
+            <a href="#" class="hover:text-ranga-400 transition-colors hover-target">LinkedIn</a>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- Custom Cursor Logic ---
+        const cursor = document.getElementById('cursor');
+        const bloop = document.getElementById('bloop');
+        const hoverTargets = document.querySelectorAll('.hover-target');
+
+        // Only run cursor logic if on a non-touch device
+        if (window.matchMedia("(pointer: fine)").matches) {
+            window.addEventListener('mousemove', (e) => {
+                // Smooth cursor follow
+                gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.15, ease: "power2.out" });
+                // Slower bloop follow
+                gsap.to(bloop, { x: e.clientX, y: e.clientY, duration: 1.5, ease: "power2.out" });
+            });
+
+            // Add hover state to links and buttons
+            hoverTargets.forEach(target => {
+                target.addEventListener('mouseenter', () => cursor.classList.add('hover-state'));
+                target.addEventListener('mouseleave', () => cursor.classList.remove('hover-state'));
+            });
+        }
+
+        // --- Magnetic Button Effect ---
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                gsap.to(btn, { x: x * 0.3, y: y * 0.3, duration: 0.4, ease: "power2.out" });
+            });
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.3)" });
+            });
+        });
+
+        // --- GSAP Animations ---
+
+        // 1. Initial Hero Reveal
+        gsap.from(".stagger-reveal", {
+            y: 60, opacity: 0, duration: 1.2, stagger: 0.15, ease: "power3.out", delay: 0.2
+        });
+
+        // 2. Image Parallax inside Cards (Awwwards staple)
+        document.querySelectorAll('.work-card').forEach(card => {
+            const img = card.querySelector('.parallax-img');
+            gsap.to(img, {
+                y: "20%", // Moves the image down as you scroll past
+                ease: "none",
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        });
+
+        // 3. Fade up elements on scroll
+        document.querySelectorAll('.reveal-up').forEach(el => {
+            gsap.from(el, {
+                scrollTrigger: { trigger: el, start: "top 85%" },
+                y: 50, opacity: 0, duration: 1, ease: "power3.out"
+            });
+        });
+
+        // 4. Text blocks reveal
+        document.querySelectorAll('.reveal-text').forEach(el => {
+            gsap.from(el, {
+                scrollTrigger: { trigger: el, start: "top 85%" },
+                y: 30, opacity: 0, duration: 1, ease: "power2.out"
+            });
+        });
+
+        // 5. Section Divider Lines
+        gsap.to(".work-line", {
+            scrollTrigger: { trigger: "#work", start: "top 80%" },
+            scaleX: 1, duration: 1.5, ease: "power4.out"
+        });
+        gsap.to(".init-line", {
+            scrollTrigger: { trigger: "#initiative", start: "top 80%" },
+            scaleX: 1, duration: 1.5, ease: "power4.out"
+        });
+    </script>
+</body>
+</html>
